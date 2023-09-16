@@ -6,49 +6,52 @@ import java.io.Serializable;
  * Created by xuxueli on 2017-05-10 20:22:42
  */
 public class RegistryParam implements Serializable {
-    private static final long serialVersionUID = 42L;
 
-    private String registryGroup;
-    private String registryKey;
-    private String registryValue;
+  private static final long serialVersionUID = 42L;
 
-    public RegistryParam(){}
-    public RegistryParam(String registryGroup, String registryKey, String registryValue) {
-        this.registryGroup = registryGroup;
-        this.registryKey = registryKey;
-        this.registryValue = registryValue;
-    }
+  private String registryGroup;
+  private String registryKey;
+  private String registryValue;
 
-    public String getRegistryGroup() {
-        return registryGroup;
-    }
+  public RegistryParam() {
+  }
 
-    public void setRegistryGroup(String registryGroup) {
-        this.registryGroup = registryGroup;
-    }
+  public RegistryParam(String registryGroup, String registryKey, String registryValue) {
+    this.registryGroup = registryGroup;
+    this.registryKey = registryKey;
+    this.registryValue = registryValue;
+  }
 
-    public String getRegistryKey() {
-        return registryKey;
-    }
+  public String getRegistryGroup() {
+    return registryGroup;
+  }
 
-    public void setRegistryKey(String registryKey) {
-        this.registryKey = registryKey;
-    }
+  public void setRegistryGroup(String registryGroup) {
+    this.registryGroup = registryGroup;
+  }
 
-    public String getRegistryValue() {
-        return registryValue;
-    }
+  public String getRegistryKey() {
+    return registryKey;
+  }
 
-    public void setRegistryValue(String registryValue) {
-        this.registryValue = registryValue;
-    }
+  public void setRegistryKey(String registryKey) {
+    this.registryKey = registryKey;
+  }
 
-    @Override
-    public String toString() {
-        return "RegistryParam{" +
-                "registryGroup='" + registryGroup + '\'' +
-                ", registryKey='" + registryKey + '\'' +
-                ", registryValue='" + registryValue + '\'' +
-                '}';
-    }
+  public String getRegistryValue() {
+    return registryValue;
+  }
+
+  public void setRegistryValue(String registryValue) {
+    this.registryValue = registryValue;
+  }
+
+  @Override
+  public String toString() {
+    return "RegistryParam{" +
+        "registryGroup='" + registryGroup + '\'' +
+        ", registryKey='" + registryKey + '\'' +
+        ", registryValue='" + registryValue + '\'' +
+        '}';
+  }
 }

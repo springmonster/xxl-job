@@ -6,62 +6,65 @@ import java.io.Serializable;
  * Created by xuxueli on 17/3/2.
  */
 public class HandleCallbackParam implements Serializable {
-    private static final long serialVersionUID = 42L;
 
-    private long logId;
-    private long logDateTim;
+  private static final long serialVersionUID = 42L;
 
-    private int handleCode;
-    private String handleMsg;
+  private long logId;
+  private long logDateTim;
 
-    public HandleCallbackParam(){}
-    public HandleCallbackParam(long logId, long logDateTim, int handleCode, String handleMsg) {
-        this.logId = logId;
-        this.logDateTim = logDateTim;
-        this.handleCode = handleCode;
-        this.handleMsg = handleMsg;
-    }
+  private int handleCode;
+  private String handleMsg;
 
-    public long getLogId() {
-        return logId;
-    }
+  public HandleCallbackParam() {
+  }
 
-    public void setLogId(long logId) {
-        this.logId = logId;
-    }
+  public HandleCallbackParam(long logId, long logDateTim, int handleCode, String handleMsg) {
+    this.logId = logId;
+    this.logDateTim = logDateTim;
+    this.handleCode = handleCode;
+    this.handleMsg = handleMsg;
+  }
 
-    public long getLogDateTim() {
-        return logDateTim;
-    }
+  public long getLogId() {
+    return logId;
+  }
 
-    public void setLogDateTim(long logDateTim) {
-        this.logDateTim = logDateTim;
-    }
+  public void setLogId(long logId) {
+    this.logId = logId;
+  }
 
-    public int getHandleCode() {
-        return handleCode;
-    }
+  public long getLogDateTim() {
+    return logDateTim;
+  }
 
-    public void setHandleCode(int handleCode) {
-        this.handleCode = handleCode;
-    }
+  public void setLogDateTim(long logDateTim) {
+    this.logDateTim = logDateTim;
+  }
 
-    public String getHandleMsg() {
-        return handleMsg;
-    }
+  public int getHandleCode() {
+    return handleCode;
+  }
 
-    public void setHandleMsg(String handleMsg) {
-        this.handleMsg = handleMsg;
-    }
+  public void setHandleCode(int handleCode) {
+    this.handleCode = handleCode;
+  }
 
-    @Override
-    public String toString() {
-        return "HandleCallbackParam{" +
-                "logId=" + logId +
-                ", logDateTim=" + logDateTim +
-                ", handleCode=" + handleCode +
-                ", handleMsg='" + handleMsg + '\'' +
-                '}';
-    }
+  public String getHandleMsg() {
+    return handleMsg;
+  }
+
+  public void setHandleMsg(String handleMsg) {
+    this.handleMsg = handleMsg;
+  }
+
+  @Override
+  public String toString() {
+    return "HandleCallbackParam{" +
+        "logId=" + logId +
+        ", logDateTim=" + logDateTim +
+        ", handleCode=" + handleCode +
+        ", handleMsg='" + handleMsg + '\'' +
+        '}';
+  }
 
 }
