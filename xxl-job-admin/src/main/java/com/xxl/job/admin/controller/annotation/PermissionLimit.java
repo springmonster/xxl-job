@@ -22,8 +22,8 @@ public @interface PermissionLimit {
   /**
    * 要求管理员权限
    *
-   * @return
+   * @return true-是，false-否
    */
-  boolean adminuser() default false;
+  boolean adminUser() default false;
 
 }

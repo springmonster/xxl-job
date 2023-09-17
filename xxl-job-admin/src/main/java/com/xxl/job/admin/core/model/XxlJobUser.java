@@ -55,7 +55,7 @@ public class XxlJobUser {
 
   // plugin
   public boolean validPermission(int jobGroup) {
-    if (this.role == 1) {
+    if (this.role == Role.ADMIN.getValue()) {
       return true;
     } else {
       if (StringUtils.hasText(this.permission)) {
@@ -67,7 +67,6 @@ public class XxlJobUser {
       }
       return false;
     }
-
   }
-
 }
+

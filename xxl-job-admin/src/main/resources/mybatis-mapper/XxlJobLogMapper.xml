@@ -65,9 +65,9 @@
       </if>
       <if test="logStatus == 2">
         AND (
-        t.trigger_code NOT IN (0, 200) OR
-        t.handle_code NOT IN (0, 200)
-        )
+              t.trigger_code NOT IN (0, 200) OR
+              t.handle_code NOT IN (0, 200)
+          )
       </if>
       <if test="logStatus == 3">
         AND t.trigger_code = 200
@@ -99,9 +99,9 @@
       </if>
       <if test="logStatus == 2">
         AND (
-        t.trigger_code NOT IN (0, 200) OR
-        t.handle_code NOT IN (0, 200)
-        )
+              t.trigger_code NOT IN (0, 200) OR
+              t.handle_code NOT IN (0, 200)
+          )
       </if>
       <if test="logStatus == 3">
         AND t.trigger_code = 200
@@ -120,19 +120,16 @@
 
   <insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobLog" useGeneratedKeys="true"
     keyProperty="id">
-    INSERT INTO xxl_job_log (
-    `job_group`,
-    `job_id`,
-    `trigger_time`,
-    `trigger_code`,
-    `handle_code`
-    ) VALUES (
-    #{jobGroup},
-    #{jobId},
-    #{triggerTime},
-    #{triggerCode},
-    #{handleCode}
-    );
+    INSERT INTO xxl_job_log (`job_group`,
+                             `job_id`,
+                             `trigger_time`,
+                             `trigger_code`,
+                             `handle_code`)
+    VALUES (#{jobGroup},
+            #{jobId},
+            #{triggerTime},
+            #{triggerCode},
+            #{handleCode});
     <!--<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
       SELECT LAST_INSERT_ID()
     </selectKey>-->
@@ -140,29 +137,28 @@
 
   <update id="updateTriggerInfo">
     UPDATE xxl_job.xxl_job_log
-    SET
-    `trigger_time`= #{triggerTime},
-    `trigger_code`= #{triggerCode},
-    `trigger_msg`= #{triggerMsg},
-    `executor_address`= #{executorAddress},
-    `executor_handler`=#{executorHandler},
-    `executor_param`= #{executorParam},
-    `executor_sharding_param`= #{executorShardingParam},
-    `executor_fail_retry_count`= #{executorFailRetryCount}
-    WHERE `id`= #{id}
+    SET `trigger_time`= #{triggerTime},
+        `trigger_code`= #{triggerCode},
+        `trigger_msg`= #{triggerMsg},
+        `executor_address`= #{executorAddress},
+        `executor_handler`=#{executorHandler},
+        `executor_param`= #{executorParam},
+        `executor_sharding_param`= #{executorShardingParam},
+        `executor_fail_retry_count`= #{executorFailRetryCount}
+    WHERE `id` = #{id}
   </update>
 
   <update id="updateHandleInfo">
     UPDATE xxl_job_log
-    SET
-    `handle_time`= #{handleTime},
-    `handle_code`= #{handleCode},
-    `handle_msg`= #{handleMsg}
-    WHERE `id`= #{id}
+    SET `handle_time`= #{handleTime},
+        `handle_code`= #{handleCode},
+        `handle_msg`= #{handleMsg}
+    WHERE `id` = #{id}
   </update>
 
   <delete id="delete">
-    delete from xxl_job_log
+    delete
+    from xxl_job_log
     WHERE job_id = #{jobId}
   </delete>
 
@@ -179,17 +175,17 @@
   </select>-->
 
   <select id="findLogReport" resultType="java.util.Map">
-    SELECT
-    COUNT(handle_code) triggerDayCount,
-    SUM(CASE WHEN (trigger_code in (0, 200) and handle_code = 0) then 1 else 0 end) as
-    triggerDayCountRunning,
-    SUM(CASE WHEN handle_code = 200 then 1 else 0 end) as triggerDayCountSuc
+    SELECT COUNT(handle_code)                                                                 triggerDayCount,
+           SUM(CASE WHEN (trigger_code in (0, 200) and handle_code = 0) then 1 else 0 end) as
+                                                                                              triggerDayCountRunning,
+           SUM(CASE WHEN handle_code = 200 then 1 else 0 end)                              as triggerDayCountSuc
     FROM xxl_job_log
     WHERE trigger_time BETWEEN #{from} and #{to}
   </select>
 
   <select id="findClearLogIds" resultType="long">
-    SELECT id FROM xxl_job_log
+    SELECT id
+    FROM xxl_job_log
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="jobGroup gt 0">
         AND job_group = #{jobGroup}
@@ -203,7 +199,8 @@
       <if test="clearBeforeNum gt 0">
         AND id NOT in(
         SELECT id FROM(
-        SELECT id FROM xxl_job_log AS t
+        SELECT id
+        FROM xxl_job_log AS t
         <trim prefix="WHERE" prefixOverrides="AND | OR">
           <if test="jobGroup gt 0">
             AND t.job_group = #{jobGroup}
@@ -223,7 +220,8 @@
   </select>
 
   <delete id="clearLog">
-    delete from xxl_job_log
+    delete
+    from xxl_job_log
     WHERE id in
     <foreach collection="logIds" item="item" open="(" close=")" separator=",">
       #{item}
@@ -231,35 +229,33 @@
   </delete>
 
   <select id="findFailJobLogIds" resultType="long">
-    SELECT id FROM `xxl_job_log`
+    SELECT id
+    FROM `xxl_job_log`
     WHERE !(
-    (trigger_code in (0, 200) and handle_code = 0)
-    OR
-    (handle_code = 200)
-    )
-    AND `alarm_status` = 0
+        (trigger_code in (0, 200) and handle_code = 0)
+        OR
+        (handle_code = 200)
+      )
+      AND `alarm_status` = 0
     ORDER BY id ASC
     LIMIT #{pagesize}
   </select>
 
   <update id="updateAlarmStatus">
     UPDATE xxl_job_log
-    SET
-    `alarm_status` = #{newAlarmStatus}
-    WHERE `id`= #{logId} AND `alarm_status` = #{oldAlarmStatus}
+    SET `alarm_status` = #{newAlarmStatus}
+    WHERE `id` = #{logId}
+      AND `alarm_status` = #{oldAlarmStatus}
   </update>
 
   <select id="findLostJobIds" resultType="long">
-    SELECT
-    t.id
-    FROM
-    xxl_job_log t
-    LEFT JOIN xxl_job_registry t2 ON t.executor_address = t2.registry_value
-    WHERE
-    t.trigger_code = 200
-    AND t.handle_code = 0
-    AND t.trigger_time <![CDATA[ <= ]]> #{losedTime}
-    AND t2.id IS NULL;
+    SELECT t.id
+    FROM xxl_job_log t
+           LEFT JOIN xxl_job_registry t2 ON t.executor_address = t2.registry_value
+    WHERE t.trigger_code = 200
+      AND t.handle_code = 0
+      AND t.trigger_time <![CDATA[ <= ]]> #{losedTime}
+      AND t2.id IS NULL;
   </select>
   <!--
   SELECT t.id

@@ -15,6 +15,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
   @Resource
   private PermissionInterceptor permissionInterceptor;
+  
   @Resource
   private CookieInterceptor cookieInterceptor;
 
@@ -23,5 +24,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
     registry.addInterceptor(permissionInterceptor).addPathPatterns("/**");
     registry.addInterceptor(cookieInterceptor).addPathPatterns("/**");
   }
-
 }

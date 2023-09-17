@@ -9,13 +9,13 @@ import java.io.Serializable;
  */
 public class ReturnT<T> implements Serializable {
 
-  public static final long serialVersionUID = 42L;
+  private static final long serialVersionUID = 42L;
 
   public static final int SUCCESS_CODE = 200;
   public static final int FAIL_CODE = 500;
 
-  public static final ReturnT<String> SUCCESS = new ReturnT<String>(null);
-  public static final ReturnT<String> FAIL = new ReturnT<String>(FAIL_CODE, null);
+  public static final ReturnT<String> SUCCESS = new ReturnT<>(null);
+  public static final ReturnT<String> FAIL = new ReturnT<>(FAIL_CODE, null);
 
   private int code;
   private String msg;

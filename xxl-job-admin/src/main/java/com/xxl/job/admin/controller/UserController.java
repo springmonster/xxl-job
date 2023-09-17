@@ -34,7 +34,7 @@ public class UserController {
   private XxlJobGroupDao xxlJobGroupDao;
 
   @RequestMapping
-  @PermissionLimit(adminuser = true)
+  @PermissionLimit(adminUser = true)
   public String index(Model model) {
 
     // 执行器列表
@@ -46,7 +46,7 @@ public class UserController {
 
   @RequestMapping("/pageList")
   @ResponseBody
-  @PermissionLimit(adminuser = true)
+  @PermissionLimit(adminUser = true)
   public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int start,
       @RequestParam(required = false, defaultValue = "10") int length,
       String username, int role) {
@@ -56,7 +56,7 @@ public class UserController {
     int list_count = xxlJobUserDao.pageListCount(start, length, username, role);
 
     // filter
-    if (list != null && list.size() > 0) {
+    if (list != null && !list.isEmpty()) {
       for (XxlJobUser item : list) {
         item.setPassword(null);
       }
@@ -72,61 +72,74 @@ public class UserController {
 
   @RequestMapping("/add")
   @ResponseBody
-  @PermissionLimit(adminuser = true)
+  @PermissionLimit(adminUser = true)
   public ReturnT<String> add(XxlJobUser xxlJobUser) {
 
     // valid username
+    // 检查用户名是否为空
     if (!StringUtils.hasText(xxlJobUser.getUsername())) {
       return new ReturnT<>(ReturnT.FAIL_CODE,
           I18nUtil.getString("system_please_input") + I18nUtil.getString("user_username"));
     }
+
     xxlJobUser.setUsername(xxlJobUser.getUsername().trim());
+
+    // 检查用户名长度是否符合要求
     if (!(xxlJobUser.getUsername().length() >= 4 && xxlJobUser.getUsername().length() <= 20)) {
-      return new ReturnT<String>(ReturnT.FAIL_CODE,
-          I18nUtil.getString("system_lengh_limit") + "[4-20]");
+      return new ReturnT<>(ReturnT.FAIL_CODE,
+          I18nUtil.getString("system_length_limit") + "[4-20]");
     }
+
     // valid password
     if (!StringUtils.hasText(xxlJobUser.getPassword())) {
-      return new ReturnT<String>(ReturnT.FAIL_CODE,
+      return new ReturnT<>(ReturnT.FAIL_CODE,
           I18nUtil.getString("system_please_input") + I18nUtil.getString("user_password"));
     }
+
     xxlJobUser.setPassword(xxlJobUser.getPassword().trim());
+
+    // 检查密码长度是否符合要求
     if (!(xxlJobUser.getPassword().length() >= 4 && xxlJobUser.getPassword().length() <= 20)) {
-      return new ReturnT<String>(ReturnT.FAIL_CODE,
-          I18nUtil.getString("system_lengh_limit") + "[4-20]");
+      return new ReturnT<>(ReturnT.FAIL_CODE,
+          I18nUtil.getString("system_length_limit") + "[4-20]");
     }
+
     // md5 password
+    // TODO: 2023/9/17 这里需要改进，只使用md5加密是不安全的，需要加盐，或者使用其他加密方式
     xxlJobUser.setPassword(DigestUtils.md5DigestAsHex(xxlJobUser.getPassword().getBytes()));
 
     // check repeat
+    // 检查用户名是否已存在 select * from xxl_job_user where username = #{username}
     XxlJobUser existUser = xxlJobUserDao.loadByUserName(xxlJobUser.getUsername());
+
     if (existUser != null) {
-      return new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("user_username_repeat"));
+      return new ReturnT<>(ReturnT.FAIL_CODE, I18nUtil.getString("user_username_repeat"));
     }
 
     // write
     xxlJobUserDao.save(xxlJobUser);
+
     return ReturnT.SUCCESS;
   }
 
   @RequestMapping("/update")
   @ResponseBody
-  @PermissionLimit(adminuser = true)
+  @PermissionLimit(adminUser = true)
   public ReturnT<String> update(HttpServletRequest request, XxlJobUser xxlJobUser) {
 
     // avoid opt login seft
     XxlJobUser loginUser = (XxlJobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
     if (loginUser.getUsername().equals(xxlJobUser.getUsername())) {
-      return new ReturnT<String>(ReturnT.FAIL.getCode(),
-          I18nUtil.getString("user_update_loginuser_limit"));
+      return new ReturnT<>(ReturnT.FAIL.getCode(),
+          I18nUtil.getString("user_update_login_user_limit"));
     }
 
     // valid password
     if (StringUtils.hasText(xxlJobUser.getPassword())) {
       xxlJobUser.setPassword(xxlJobUser.getPassword().trim());
       if (!(xxlJobUser.getPassword().length() >= 4 && xxlJobUser.getPassword().length() <= 20)) {
-        return new ReturnT<String>(ReturnT.FAIL_CODE,
-            I18nUtil.getString("system_lengh_limit") + "[4-20]");
+        return new ReturnT<>(ReturnT.FAIL_CODE,
+            I18nUtil.getString("system_length_limit") + "[4-20]");
       }
       // md5 password
       xxlJobUser.setPassword(DigestUtils.md5DigestAsHex(xxlJobUser.getPassword().getBytes()));
@@ -141,14 +154,14 @@ public class UserController {
 
   @RequestMapping("/remove")
   @ResponseBody
-  @PermissionLimit(adminuser = true)
+  @PermissionLimit(adminUser = true)
   public ReturnT<String> remove(HttpServletRequest request, int id) {
 
     // avoid opt login seft
     XxlJobUser loginUser = (XxlJobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
     if (loginUser.getId() == id) {
-      return new ReturnT<String>(ReturnT.FAIL.getCode(),
-          I18nUtil.getString("user_update_loginuser_limit"));
+      return new ReturnT<>(ReturnT.FAIL.getCode(),
+          I18nUtil.getString("user_update_login_user_limit"));
     }
 
     xxlJobUserDao.delete(id);
@@ -160,13 +173,15 @@ public class UserController {
   public ReturnT<String> updatePwd(HttpServletRequest request, String password) {
 
     // valid password
-    if (password == null || password.trim().length() == 0) {
-      return new ReturnT<String>(ReturnT.FAIL.getCode(), "密码不可为空");
+    if (password == null || password.trim().isEmpty()) {
+      return new ReturnT<>(ReturnT.FAIL.getCode(), "密码不可为空");
     }
+
     password = password.trim();
+
     if (!(password.length() >= 4 && password.length() <= 20)) {
-      return new ReturnT<String>(ReturnT.FAIL_CODE,
-          I18nUtil.getString("system_lengh_limit") + "[4-20]");
+      return new ReturnT<>(ReturnT.FAIL_CODE,
+          I18nUtil.getString("system_length_limit") + "[4-20]");
     }
 
     // md5 password

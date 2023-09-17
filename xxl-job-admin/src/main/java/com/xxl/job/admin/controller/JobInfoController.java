@@ -1,6 +1,7 @@
 package com.xxl.job.admin.controller;
 
 import com.xxl.job.admin.core.exception.XxlJobException;
+import com.xxl.job.admin.core.model.Role;
 import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobInfo;
 import com.xxl.job.admin.core.model.XxlJobUser;
@@ -81,7 +82,7 @@ public class JobInfoController {
     List<XxlJobGroup> jobGroupList = new ArrayList<>();
     if (jobGroupList_all != null && jobGroupList_all.size() > 0) {
       XxlJobUser loginUser = (XxlJobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
-      if (loginUser.getRole() == 1) {
+      if (loginUser.getRole() == Role.ADMIN.getValue()) {
         jobGroupList = jobGroupList_all;
       } else {
         List<String> groupIdStrs = new ArrayList<>();

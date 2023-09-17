@@ -1,6 +1,7 @@
 package com.xxl.job.admin.controller.interceptor;
 
 import com.xxl.job.admin.controller.annotation.PermissionLimit;
+import com.xxl.job.admin.core.model.Role;
 import com.xxl.job.admin.core.model.XxlJobUser;
 import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.admin.service.LoginService;
@@ -23,8 +24,7 @@ public class PermissionInterceptor implements AsyncHandlerInterceptor {
   private LoginService loginService;
 
   @Override
-  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-      throws Exception {
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
     if (!(handler instanceof HandlerMethod)) {
       return true;  // proceed with the next interceptor
@@ -37,7 +37,7 @@ public class PermissionInterceptor implements AsyncHandlerInterceptor {
     PermissionLimit permission = method.getMethodAnnotation(PermissionLimit.class);
     if (permission != null) {
       needLogin = permission.limit();
-      needAdminuser = permission.adminuser();
+      needAdminuser = permission.adminUser();
     }
 
     if (needLogin) {
@@ -47,7 +47,7 @@ public class PermissionInterceptor implements AsyncHandlerInterceptor {
         response.setHeader("location", request.getContextPath() + "/toLogin");
         return false;
       }
-      if (needAdminuser && loginUser.getRole() != 1) {
+      if (needAdminuser && loginUser.getRole() != Role.ADMIN.getValue()) {
         throw new RuntimeException(I18nUtil.getString("system_permission_limit"));
       }
       request.setAttribute(LoginService.LOGIN_IDENTITY_KEY, loginUser);

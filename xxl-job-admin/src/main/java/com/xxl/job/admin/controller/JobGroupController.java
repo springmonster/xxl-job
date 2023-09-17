@@ -39,14 +39,14 @@ public class JobGroupController {
   private XxlJobRegistryDao xxlJobRegistryDao;
 
   @RequestMapping
-  @PermissionLimit(adminuser = true)
+  @PermissionLimit(adminUser = true)
   public String index(Model model) {
     return "jobgroup/jobgroup.index";
   }
 
   @RequestMapping("/pageList")
   @ResponseBody
-  @PermissionLimit(adminuser = true)
+  @PermissionLimit(adminUser = true)
   public Map<String, Object> pageList(HttpServletRequest request,
       @RequestParam(required = false, defaultValue = "0") int start,
       @RequestParam(required = false, defaultValue = "10") int length,
@@ -66,7 +66,7 @@ public class JobGroupController {
 
   @RequestMapping("/save")
   @ResponseBody
-  @PermissionLimit(adminuser = true)
+  @PermissionLimit(adminUser = true)
   public ReturnT<String> save(XxlJobGroup xxlJobGroup) {
 
     // valid
@@ -117,7 +117,7 @@ public class JobGroupController {
 
   @RequestMapping("/update")
   @ResponseBody
-  @PermissionLimit(adminuser = true)
+  @PermissionLimit(adminUser = true)
   public ReturnT<String> update(XxlJobGroup xxlJobGroup) {
     // valid
     if (xxlJobGroup.getAppname() == null || xxlJobGroup.getAppname().trim().length() == 0) {
@@ -189,7 +189,7 @@ public class JobGroupController {
 
   @RequestMapping("/remove")
   @ResponseBody
-  @PermissionLimit(adminuser = true)
+  @PermissionLimit(adminUser = true)
   public ReturnT<String> remove(int id) {
 
     // valid
@@ -209,7 +209,7 @@ public class JobGroupController {
 
   @RequestMapping("/loadById")
   @ResponseBody
-  @PermissionLimit(adminuser = true)
+  @PermissionLimit(adminUser = true)
   public ReturnT<XxlJobGroup> loadById(int id) {
     XxlJobGroup jobGroup = xxlJobGroupDao.load(id);
     return jobGroup != null ? new ReturnT<XxlJobGroup>(jobGroup)
