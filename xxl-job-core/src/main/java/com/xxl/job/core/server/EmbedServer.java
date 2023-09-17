@@ -1,11 +1,11 @@
 package com.xxl.job.core.server;
 
+import com.xxl.job.common.model.ReturnT;
 import com.xxl.job.core.biz.ExecutorBiz;
 import com.xxl.job.core.biz.impl.ExecutorBizImpl;
 import com.xxl.job.core.biz.model.IdleBeatParam;
 import com.xxl.job.core.biz.model.KillParam;
 import com.xxl.job.core.biz.model.LogParam;
-import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.biz.model.TriggerParam;
 import com.xxl.job.core.thread.ExecutorRegistryThread;
 import com.xxl.job.core.util.GsonTool;

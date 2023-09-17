@@ -24,6 +24,12 @@
 
   <dependencies>
 
+    <dependency>
+      <groupId>org.kuanghc</groupId>
+      <artifactId>xxl-job-common</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
     <!-- starter-web：spring-webmvc + autoconfigure + logback + yaml + tomcat -->
     <dependency>
       <groupId>org.springframework.boot</groupId>

@@ -1,10 +1,10 @@
 package com.xxl.job.core.biz;
 
+import com.xxl.job.common.model.ReturnT;
 import com.xxl.job.core.biz.model.IdleBeatParam;
 import com.xxl.job.core.biz.model.KillParam;
 import com.xxl.job.core.biz.model.LogParam;
 import com.xxl.job.core.biz.model.LogResult;
-import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.biz.model.TriggerParam;
 
 /**

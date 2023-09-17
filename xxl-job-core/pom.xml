@@ -16,6 +16,12 @@
 
   <dependencies>
 
+    <dependency>
+      <groupId>org.kuanghc</groupId>
+      <artifactId>xxl-job-common</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
     <!-- ********************** embed server: netty + gson ********************** -->
     <dependency>
       <groupId>io.netty</groupId>

@@ -1,6 +1,6 @@
 package com.xxl.job.core.util;
 
-import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.common.model.ReturnT;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;

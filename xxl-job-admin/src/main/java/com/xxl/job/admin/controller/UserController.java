@@ -7,7 +7,7 @@ import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.admin.dao.XxlJobGroupDao;
 import com.xxl.job.admin.dao.XxlJobUserDao;
 import com.xxl.job.admin.service.LoginService;
-import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.common.model.ReturnT;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     // package result
-    Map<String, Object> maps = new HashMap<String, Object>();
+    Map<String, Object> maps = new HashMap<>();
     maps.put("recordsTotal", list_count);    // 总记录数
     maps.put("recordsFiltered", list_count);  // 过滤后的总记录数
     maps.put("data", list);            // 分页列表
@@ -77,7 +77,7 @@ public class UserController {
 
     // valid username
     if (!StringUtils.hasText(xxlJobUser.getUsername())) {
-      return new ReturnT<String>(ReturnT.FAIL_CODE,
+      return new ReturnT<>(ReturnT.FAIL_CODE,
           I18nUtil.getString("system_please_input") + I18nUtil.getString("user_username"));
     }
     xxlJobUser.setUsername(xxlJobUser.getUsername().trim());

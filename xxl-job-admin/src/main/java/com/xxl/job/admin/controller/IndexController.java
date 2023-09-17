@@ -3,7 +3,7 @@ package com.xxl.job.admin.controller;
 import com.xxl.job.admin.controller.annotation.PermissionLimit;
 import com.xxl.job.admin.service.LoginService;
 import com.xxl.job.admin.service.XxlJobService;
-import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.common.model.ReturnT;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;

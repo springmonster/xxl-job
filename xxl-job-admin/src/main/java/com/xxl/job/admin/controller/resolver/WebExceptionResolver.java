@@ -2,7 +2,7 @@ package com.xxl.job.admin.controller.resolver;
 
 import com.xxl.job.admin.core.exception.XxlJobException;
 import com.xxl.job.admin.core.util.JacksonUtil;
-import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.common.model.ReturnT;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
