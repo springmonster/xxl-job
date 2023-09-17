@@ -74,8 +74,8 @@ public class XxlJobTrigger {
       String[] shardingArr = executorShardingParam.split("/");
       if (shardingArr.length == 2 && isNumeric(shardingArr[0]) && isNumeric(shardingArr[1])) {
         shardingParam = new int[2];
-        shardingParam[0] = Integer.valueOf(shardingArr[0]);
-        shardingParam[1] = Integer.valueOf(shardingArr[1]);
+        shardingParam[0] = Integer.parseInt(shardingArr[0]);
+        shardingParam[1] = Integer.parseInt(shardingArr[1]);
       }
     }
     if (ExecutorRouteStrategyEnum.SHARDING_BROADCAST == ExecutorRouteStrategyEnum.match(
@@ -167,16 +167,16 @@ public class XxlJobTrigger {
         }
       }
     } else {
-      routeAddressResult = new ReturnT<String>(ReturnT.FAIL_CODE,
+      routeAddressResult = new ReturnT<>(ReturnT.FAIL_CODE,
           I18nUtil.getString("jobconf_trigger_address_empty"));
     }
 
     // 4、trigger remote executor
-    ReturnT<String> triggerResult = null;
+    ReturnT<String> triggerResult;
     if (address != null) {
       triggerResult = runExecutor(triggerParam, address);
     } else {
-      triggerResult = new ReturnT<String>(ReturnT.FAIL_CODE, null);
+      triggerResult = new ReturnT<>(ReturnT.FAIL_CODE, null);
     }
 
     // 5、collection trigger info
@@ -230,7 +230,7 @@ public class XxlJobTrigger {
    * @return
    */
   public static ReturnT<String> runExecutor(TriggerParam triggerParam, String address) {
-    ReturnT<String> runResult = null;
+    ReturnT<String> runResult;
     try {
       ExecutorBiz executorBiz = XxlJobScheduler.getExecutorBiz(address);
       runResult = executorBiz.run(triggerParam);
@@ -238,7 +238,7 @@ public class XxlJobTrigger {
       logger.error(
           ">>>>>>>>>>> xxl-job trigger error, please check if the executor[{}] is running.",
           address, e);
-      runResult = new ReturnT<String>(ReturnT.FAIL_CODE, ThrowableUtil.toString(e));
+      runResult = new ReturnT<>(ReturnT.FAIL_CODE, ThrowableUtil.toString(e));
     }
 
     StringBuffer runResultSB = new StringBuffer(I18nUtil.getString("jobconf_trigger_run") + "：");

@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -145,16 +144,13 @@ public class JobThread extends Thread {
             // limit timeout
             Thread futureThread = null;
             try {
-              FutureTask<Boolean> futureTask = new FutureTask<Boolean>(new Callable<Boolean>() {
-                @Override
-                public Boolean call() throws Exception {
+              FutureTask<Boolean> futureTask = new FutureTask<>(() -> {
 
-                  // init job context
-                  XxlJobContext.setXxlJobContext(xxlJobContext);
+                // init job context
+                XxlJobContext.setXxlJobContext(xxlJobContext);
 
-                  handler.execute();
-                  return true;
-                }
+                handler.execute();
+                return true;
               });
               futureThread = new Thread(futureTask);
               futureThread.start();

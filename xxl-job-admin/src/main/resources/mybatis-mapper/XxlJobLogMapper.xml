@@ -139,7 +139,7 @@
   </insert>
 
   <update id="updateTriggerInfo">
-    UPDATE xxl_job_log
+    UPDATE xxl_job.xxl_job_log
     SET
     `trigger_time`= #{triggerTime},
     `trigger_code`= #{triggerCode},

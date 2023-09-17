@@ -98,7 +98,7 @@ public class XxlJobCompleter {
 
   private static boolean isNumeric(String str) {
     try {
-      int result = Integer.valueOf(str);
+      int result = Integer.parseInt(str);
       return true;
     } catch (NumberFormatException e) {
       return false;

@@ -176,7 +176,7 @@
   </select>
 
   <update id="update" parameterType="com.xxl.job.admin.core.model.XxlJobInfo">
-    UPDATE xxl_job_info
+    UPDATE xxl_job.xxl_job_info
     SET
     job_group = #{jobGroup},
     job_desc = #{jobDesc},
@@ -225,7 +225,7 @@
   <select id="scheduleJobQuery" parameterType="java.util.HashMap" resultMap="XxlJobInfo">
     SELECT
     <include refid="Base_Column_List"/>
-    FROM xxl_job_info AS t
+    FROM xxl_job.xxl_job_info AS t
     WHERE t.trigger_status = 1
     and t.trigger_next_time <![CDATA[ <= ]]> #{maxNextTime}
     ORDER BY id ASC
