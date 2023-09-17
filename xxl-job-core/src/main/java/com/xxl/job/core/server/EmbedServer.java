@@ -141,7 +141,9 @@ public class EmbedServer {
     }
 
     // stop registry
+    // kuanghc 发送停止注册请求
     stopRegistry();
+
     logger.info(">>>>>>>>>>> xxl-job remoting server destroy success.");
   }
 
@@ -234,7 +236,8 @@ public class EmbedServer {
         }
       } catch (Exception e) {
         logger.error(e.getMessage(), e);
-        return new Response<String>(Response.FAIL_CODE, "request error:" + ThrowableUtil.toString(e));
+        return new Response<String>(Response.FAIL_CODE,
+            "request error:" + ThrowableUtil.toString(e));
       }
     }
 

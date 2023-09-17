@@ -50,6 +50,7 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
   }
 
   // destroy
+  // kuanghc 当spring容器销毁时，销毁xxl-job的线程池，client发送注销请求
   @Override
   public void destroy() {
     super.destroy();

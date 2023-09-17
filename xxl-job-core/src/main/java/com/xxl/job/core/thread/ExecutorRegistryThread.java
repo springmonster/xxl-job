@@ -1,8 +1,8 @@
 package com.xxl.job.core.thread;
 
-import com.xxl.job.common.model.Response;
 import com.xxl.job.common.biz.AdminBiz;
 import com.xxl.job.common.model.RegistryParam;
+import com.xxl.job.common.model.Response;
 import com.xxl.job.core.enums.RegistryConfig;
 import com.xxl.job.core.executor.XxlJobExecutor;
 import java.util.concurrent.TimeUnit;
@@ -53,12 +53,12 @@ public class ExecutorRegistryThread {
                   registryResult = Response.SUCCESS;
                   logger.debug(
                       ">>>>>>>>>>> xxl-job registry success, registryParam:{}, registryResult:{}",
-                      new Object[]{registryParam, registryResult});
+                      registryParam, registryResult);
                   break;
                 } else {
                   logger.info(
                       ">>>>>>>>>>> xxl-job registry fail, registryParam:{}, registryResult:{}",
-                      new Object[]{registryParam, registryResult});
+                      registryParam, registryResult);
                 }
               } catch (Exception e) {
                 logger.info(">>>>>>>>>>> xxl-job registry error, registryParam:{}", registryParam,
@@ -96,12 +96,12 @@ public class ExecutorRegistryThread {
                 registryResult = Response.SUCCESS;
                 logger.info(
                     ">>>>>>>>>>> xxl-job registry-remove success, registryParam:{}, registryResult:{}",
-                    new Object[]{registryParam, registryResult});
+                    registryParam, registryResult);
                 break;
               } else {
                 logger.info(
                     ">>>>>>>>>>> xxl-job registry-remove fail, registryParam:{}, registryResult:{}",
-                    new Object[]{registryParam, registryResult});
+                    registryParam, registryResult);
               }
             } catch (Exception e) {
               if (!toStop) {
@@ -138,7 +138,5 @@ public class ExecutorRegistryThread {
         logger.error(e.getMessage(), e);
       }
     }
-
   }
-
 }
