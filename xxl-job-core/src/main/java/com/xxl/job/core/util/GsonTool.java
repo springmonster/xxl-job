@@ -47,7 +47,7 @@ public class GsonTool {
    * @param argClassOfT
    * @return
    */
-  public static <T> T fromJson(String json, Class<T> classOfT, Class argClassOfT) {
+  public static <T> T fromJson(String json, Class<T> classOfT, Class<?> argClassOfT) {
     Type type = new ParameterizedType4ReturnT(classOfT, new Class[]{argClassOfT});
     return gson.fromJson(json, type);
   }

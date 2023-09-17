@@ -1289,7 +1289,7 @@ the currently available API services are available.
     3. Executor registration remove services;
     4. Triggers a single execution service, and support the task to be triggered according to the business event;
 
-The scheduling center API service location: com.xxl.job.core.biz.AdminBiz.java
+The scheduling center API service location: com.xxl.job.common.biz.AdminBiz.java
 
 The scheduling center API service requests reference code：com.xxl.job.adminbiz.AdminBizTest.java
 

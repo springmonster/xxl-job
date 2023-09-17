@@ -5,7 +5,7 @@ import com.xxl.job.admin.core.model.XxlJobLogGlue;
 import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.admin.dao.XxlJobInfoDao;
 import com.xxl.job.admin.dao.XxlJobLogGlueDao;
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import com.xxl.job.core.glue.GlueTypeEnum;
 import java.util.Date;
 import java.util.List;
@@ -54,18 +54,18 @@ public class JobCodeController {
 
   @RequestMapping("/save")
   @ResponseBody
-  public ReturnT<String> save(Model model, int id, String glueSource, String glueRemark) {
+  public Response<String> save(Model model, int id, String glueSource, String glueRemark) {
     // valid
     if (glueRemark == null) {
-      return new ReturnT<String>(500,
+      return new Response<String>(500,
           (I18nUtil.getString("system_please_input") + I18nUtil.getString("jobinfo_glue_remark")));
     }
     if (glueRemark.length() < 4 || glueRemark.length() > 100) {
-      return new ReturnT<String>(500, I18nUtil.getString("jobinfo_glue_remark_limit"));
+      return new Response<String>(500, I18nUtil.getString("jobinfo_glue_remark_limit"));
     }
     XxlJobInfo exists_jobInfo = xxlJobInfoDao.loadById(id);
     if (exists_jobInfo == null) {
-      return new ReturnT<String>(500, I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
+      return new Response<String>(500, I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
     }
 
     // update new code
@@ -90,7 +90,7 @@ public class JobCodeController {
     // remove code backup more than 30
     xxlJobLogGlueDao.removeOld(exists_jobInfo.getId(), 30);
 
-    return ReturnT.SUCCESS;
+    return Response.SUCCESS;
   }
 
 }

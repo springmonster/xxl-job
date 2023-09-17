@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JobLogFileCleanThread {
 
-  private static Logger logger = LoggerFactory.getLogger(JobLogFileCleanThread.class);
+  private static final Logger logger = LoggerFactory.getLogger(JobLogFileCleanThread.class);
 
   private static JobLogFileCleanThread instance = new JobLogFileCleanThread();
 

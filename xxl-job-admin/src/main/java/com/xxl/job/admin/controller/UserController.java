@@ -7,7 +7,7 @@ import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.admin.dao.XxlJobGroupDao;
 import com.xxl.job.admin.dao.XxlJobUserDao;
 import com.xxl.job.admin.service.LoginService;
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,12 +73,12 @@ public class UserController {
   @RequestMapping("/add")
   @ResponseBody
   @PermissionLimit(adminUser = true)
-  public ReturnT<String> add(XxlJobUser xxlJobUser) {
+  public Response<String> add(XxlJobUser xxlJobUser) {
 
     // valid username
     // 检查用户名是否为空
     if (!StringUtils.hasText(xxlJobUser.getUsername())) {
-      return new ReturnT<>(ReturnT.FAIL_CODE,
+      return new Response<>(Response.FAIL_CODE,
           I18nUtil.getString("system_please_input") + I18nUtil.getString("user_username"));
     }
 
@@ -86,13 +86,13 @@ public class UserController {
 
     // 检查用户名长度是否符合要求
     if (!(xxlJobUser.getUsername().length() >= 4 && xxlJobUser.getUsername().length() <= 20)) {
-      return new ReturnT<>(ReturnT.FAIL_CODE,
+      return new Response<>(Response.FAIL_CODE,
           I18nUtil.getString("system_length_limit") + "[4-20]");
     }
 
     // valid password
     if (!StringUtils.hasText(xxlJobUser.getPassword())) {
-      return new ReturnT<>(ReturnT.FAIL_CODE,
+      return new Response<>(Response.FAIL_CODE,
           I18nUtil.getString("system_please_input") + I18nUtil.getString("user_password"));
     }
 
@@ -100,7 +100,7 @@ public class UserController {
 
     // 检查密码长度是否符合要求
     if (!(xxlJobUser.getPassword().length() >= 4 && xxlJobUser.getPassword().length() <= 20)) {
-      return new ReturnT<>(ReturnT.FAIL_CODE,
+      return new Response<>(Response.FAIL_CODE,
           I18nUtil.getString("system_length_limit") + "[4-20]");
     }
 
@@ -113,24 +113,24 @@ public class UserController {
     XxlJobUser existUser = xxlJobUserDao.loadByUserName(xxlJobUser.getUsername());
 
     if (existUser != null) {
-      return new ReturnT<>(ReturnT.FAIL_CODE, I18nUtil.getString("user_username_repeat"));
+      return new Response<>(Response.FAIL_CODE, I18nUtil.getString("user_username_repeat"));
     }
 
     // write
     xxlJobUserDao.save(xxlJobUser);
 
-    return ReturnT.SUCCESS;
+    return Response.SUCCESS;
   }
 
   @RequestMapping("/update")
   @ResponseBody
   @PermissionLimit(adminUser = true)
-  public ReturnT<String> update(HttpServletRequest request, XxlJobUser xxlJobUser) {
+  public Response<String> update(HttpServletRequest request, XxlJobUser xxlJobUser) {
 
     // avoid opt login seft
     XxlJobUser loginUser = (XxlJobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
     if (loginUser.getUsername().equals(xxlJobUser.getUsername())) {
-      return new ReturnT<>(ReturnT.FAIL.getCode(),
+      return new Response<>(Response.FAIL.getCode(),
           I18nUtil.getString("user_update_login_user_limit"));
     }
 
@@ -138,7 +138,7 @@ public class UserController {
     if (StringUtils.hasText(xxlJobUser.getPassword())) {
       xxlJobUser.setPassword(xxlJobUser.getPassword().trim());
       if (!(xxlJobUser.getPassword().length() >= 4 && xxlJobUser.getPassword().length() <= 20)) {
-        return new ReturnT<>(ReturnT.FAIL_CODE,
+        return new Response<>(Response.FAIL_CODE,
             I18nUtil.getString("system_length_limit") + "[4-20]");
       }
       // md5 password
@@ -149,38 +149,38 @@ public class UserController {
 
     // write
     xxlJobUserDao.update(xxlJobUser);
-    return ReturnT.SUCCESS;
+    return Response.SUCCESS;
   }
 
   @RequestMapping("/remove")
   @ResponseBody
   @PermissionLimit(adminUser = true)
-  public ReturnT<String> remove(HttpServletRequest request, int id) {
+  public Response<String> remove(HttpServletRequest request, int id) {
 
     // avoid opt login seft
     XxlJobUser loginUser = (XxlJobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
     if (loginUser.getId() == id) {
-      return new ReturnT<>(ReturnT.FAIL.getCode(),
+      return new Response<>(Response.FAIL.getCode(),
           I18nUtil.getString("user_update_login_user_limit"));
     }
 
     xxlJobUserDao.delete(id);
-    return ReturnT.SUCCESS;
+    return Response.SUCCESS;
   }
 
   @RequestMapping("/updatePwd")
   @ResponseBody
-  public ReturnT<String> updatePwd(HttpServletRequest request, String password) {
+  public Response<String> updatePwd(HttpServletRequest request, String password) {
 
     // valid password
     if (password == null || password.trim().isEmpty()) {
-      return new ReturnT<>(ReturnT.FAIL.getCode(), "密码不可为空");
+      return new Response<>(Response.FAIL.getCode(), "密码不可为空");
     }
 
     password = password.trim();
 
     if (!(password.length() >= 4 && password.length() <= 20)) {
-      return new ReturnT<>(ReturnT.FAIL_CODE,
+      return new Response<>(Response.FAIL_CODE,
           I18nUtil.getString("system_length_limit") + "[4-20]");
     }
 
@@ -195,7 +195,7 @@ public class UserController {
     existUser.setPassword(md5Password);
     xxlJobUserDao.update(existUser);
 
-    return ReturnT.SUCCESS;
+    return Response.SUCCESS;
   }
 
 }

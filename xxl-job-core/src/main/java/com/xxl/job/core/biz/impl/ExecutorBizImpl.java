@@ -1,6 +1,6 @@
 package com.xxl.job.core.biz.impl;
 
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import com.xxl.job.core.biz.ExecutorBiz;
 import com.xxl.job.core.biz.model.IdleBeatParam;
 import com.xxl.job.core.biz.model.KillParam;
@@ -28,12 +28,12 @@ public class ExecutorBizImpl implements ExecutorBiz {
   private static final Logger logger = LoggerFactory.getLogger(ExecutorBizImpl.class);
 
   @Override
-  public ReturnT<String> beat() {
-    return ReturnT.SUCCESS;
+  public Response<String> beat() {
+    return Response.SUCCESS;
   }
 
   @Override
-  public ReturnT<String> idleBeat(IdleBeatParam idleBeatParam) {
+  public Response<String> idleBeat(IdleBeatParam idleBeatParam) {
 
     // isRunningOrHasQueue
     boolean isRunningOrHasQueue = false;
@@ -43,13 +43,13 @@ public class ExecutorBizImpl implements ExecutorBiz {
     }
 
     if (isRunningOrHasQueue) {
-      return new ReturnT<String>(ReturnT.FAIL_CODE, "job thread is running or has trigger queue.");
+      return new Response<String>(Response.FAIL_CODE, "job thread is running or has trigger queue.");
     }
-    return ReturnT.SUCCESS;
+    return Response.SUCCESS;
   }
 
   @Override
-  public ReturnT<String> run(TriggerParam triggerParam) {
+  public Response<String> run(TriggerParam triggerParam) {
     // load old：jobHandler + jobThread
     JobThread jobThread = XxlJobExecutor.loadJobThread(triggerParam.getJobId());
     IJobHandler jobHandler = jobThread != null ? jobThread.getHandler() : null;
@@ -75,7 +75,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
       if (jobHandler == null) {
         jobHandler = newJobHandler;
         if (jobHandler == null) {
-          return new ReturnT<String>(ReturnT.FAIL_CODE,
+          return new Response<String>(Response.FAIL_CODE,
               "job handler [" + triggerParam.getExecutorHandler() + "] not found.");
         }
       }
@@ -102,7 +102,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
           jobHandler = new GlueJobHandler(originJobHandler, triggerParam.getGlueUpdatetime());
         } catch (Exception e) {
           logger.error(e.getMessage(), e);
-          return new ReturnT<String>(ReturnT.FAIL_CODE, e.getMessage());
+          return new Response<String>(Response.FAIL_CODE, e.getMessage());
         }
       }
     } else if (glueTypeEnum != null && glueTypeEnum.isScript()) {
@@ -125,7 +125,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
             triggerParam.getGlueSource(), GlueTypeEnum.match(triggerParam.getGlueType()));
       }
     } else {
-      return new ReturnT<String>(ReturnT.FAIL_CODE,
+      return new Response<String>(Response.FAIL_CODE,
           "glueType[" + triggerParam.getGlueType() + "] is not valid.");
     }
 
@@ -136,7 +136,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
       if (ExecutorBlockStrategyEnum.DISCARD_LATER == blockStrategy) {
         // discard when running
         if (jobThread.isRunningOrHasQueue()) {
-          return new ReturnT<String>(ReturnT.FAIL_CODE,
+          return new Response<String>(Response.FAIL_CODE,
               "block strategy effect：" + ExecutorBlockStrategyEnum.DISCARD_LATER.getTitle());
         }
       } else if (ExecutorBlockStrategyEnum.COVER_EARLY == blockStrategy) {
@@ -159,30 +159,30 @@ public class ExecutorBizImpl implements ExecutorBiz {
     }
 
     // push data to queue
-    ReturnT<String> pushResult = jobThread.pushTriggerQueue(triggerParam);
+    Response<String> pushResult = jobThread.pushTriggerQueue(triggerParam);
     return pushResult;
   }
 
   @Override
-  public ReturnT<String> kill(KillParam killParam) {
+  public Response<String> kill(KillParam killParam) {
     // kill handlerThread, and create new one
     JobThread jobThread = XxlJobExecutor.loadJobThread(killParam.getJobId());
     if (jobThread != null) {
       XxlJobExecutor.removeJobThread(killParam.getJobId(), "scheduling center kill job.");
-      return ReturnT.SUCCESS;
+      return Response.SUCCESS;
     }
 
-    return new ReturnT<String>(ReturnT.SUCCESS_CODE, "job thread already killed.");
+    return new Response<String>(Response.SUCCESS_CODE, "job thread already killed.");
   }
 
   @Override
-  public ReturnT<LogResult> log(LogParam logParam) {
+  public Response<LogResult> log(LogParam logParam) {
     // log filename: logPath/yyyy-MM-dd/9999.log
     String logFileName = XxlJobFileAppender.makeLogFileName(new Date(logParam.getLogDateTim()),
         logParam.getLogId());
 
     LogResult logResult = XxlJobFileAppender.readLog(logFileName, logParam.getFromLineNum());
-    return new ReturnT<LogResult>(logResult);
+    return new Response<LogResult>(logResult);
   }
 
 }

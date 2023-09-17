@@ -2,7 +2,7 @@ package com.xxl.job.admin.controller.resolver;
 
 import com.xxl.job.admin.core.exception.XxlJobException;
 import com.xxl.job.admin.core.util.JacksonUtil;
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +43,7 @@ public class WebExceptionResolver implements HandlerExceptionResolver {
     }
 
     // error result
-    ReturnT<String> errorResult = new ReturnT<String>(ReturnT.FAIL_CODE,
+    Response<String> errorResult = new Response<String>(Response.FAIL_CODE,
         ex.toString().replaceAll("\n", "<br/>"));
 
     // response

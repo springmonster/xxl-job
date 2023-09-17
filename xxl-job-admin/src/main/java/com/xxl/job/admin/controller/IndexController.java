@@ -3,7 +3,7 @@ package com.xxl.job.admin.controller;
 import com.xxl.job.admin.controller.annotation.PermissionLimit;
 import com.xxl.job.admin.service.LoginService;
 import com.xxl.job.admin.service.XxlJobService;
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -45,8 +45,8 @@ public class IndexController {
 
   @RequestMapping("/chartInfo")
   @ResponseBody
-  public ReturnT<Map<String, Object>> chartInfo(Date startDate, Date endDate) {
-    ReturnT<Map<String, Object>> chartInfo = xxlJobService.chartInfo(startDate, endDate);
+  public Response<Map<String, Object>> chartInfo(Date startDate, Date endDate) {
+    Response<Map<String, Object>> chartInfo = xxlJobService.chartInfo(startDate, endDate);
     return chartInfo;
   }
 
@@ -64,7 +64,7 @@ public class IndexController {
   @RequestMapping(value = "login", method = RequestMethod.POST)
   @ResponseBody
   @PermissionLimit(limit = false)
-  public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response,
+  public Response<String> loginDo(HttpServletRequest request, HttpServletResponse response,
       String userName, String password, String ifRemember) {
     boolean ifRem =
         (ifRemember != null && ifRemember.trim().length() > 0 && "on".equals(ifRemember)) ? true
@@ -75,7 +75,7 @@ public class IndexController {
   @RequestMapping(value = "logout", method = RequestMethod.POST)
   @ResponseBody
   @PermissionLimit(limit = false)
-  public ReturnT<String> logout(HttpServletRequest request, HttpServletResponse response) {
+  public Response<String> logout(HttpServletRequest request, HttpServletResponse response) {
     return loginService.logout(request, response);
   }
 

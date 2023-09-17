@@ -1725,7 +1725,7 @@ XXL-JOB 目标是一种跨平台、跨语言的任务调度规范和协议。
 
 ### 6.1 调度中心 RESTful API
 
-API服务位置：com.xxl.job.core.biz.AdminBiz （ com.xxl.job.admin.controller.JobApiController ）
+API服务位置：com.xxl.job.common.biz.AdminBiz （ com.xxl.job.admin.controller.JobApiController ）
 API服务请求参考代码：com.xxl.job.adminbiz.AdminBizTest
 
 #### a、任务回调

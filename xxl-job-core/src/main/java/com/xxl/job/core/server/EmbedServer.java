@@ -1,6 +1,6 @@
 package com.xxl.job.core.server;
 
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import com.xxl.job.core.biz.ExecutorBiz;
 import com.xxl.job.core.biz.impl.ExecutorBizImpl;
 import com.xxl.job.core.biz.model.IdleBeatParam;
@@ -200,15 +200,15 @@ public class EmbedServer {
         String accessTokenReq) {
       // valid
       if (HttpMethod.POST != httpMethod) {
-        return new ReturnT<String>(ReturnT.FAIL_CODE, "invalid request, HttpMethod not support.");
+        return new Response<String>(Response.FAIL_CODE, "invalid request, HttpMethod not support.");
       }
       if (uri == null || uri.trim().length() == 0) {
-        return new ReturnT<String>(ReturnT.FAIL_CODE, "invalid request, uri-mapping empty.");
+        return new Response<String>(Response.FAIL_CODE, "invalid request, uri-mapping empty.");
       }
       if (accessToken != null
           && accessToken.trim().length() > 0
           && !accessToken.equals(accessTokenReq)) {
-        return new ReturnT<String>(ReturnT.FAIL_CODE, "The access token is wrong.");
+        return new Response<String>(Response.FAIL_CODE, "The access token is wrong.");
       }
 
       // services mapping
@@ -229,12 +229,12 @@ public class EmbedServer {
             LogParam logParam = GsonTool.fromJson(requestData, LogParam.class);
             return executorBiz.log(logParam);
           default:
-            return new ReturnT<String>(ReturnT.FAIL_CODE,
+            return new Response<String>(Response.FAIL_CODE,
                 "invalid request, uri-mapping(" + uri + ") not found.");
         }
       } catch (Exception e) {
         logger.error(e.getMessage(), e);
-        return new ReturnT<String>(ReturnT.FAIL_CODE, "request error:" + ThrowableUtil.toString(e));
+        return new Response<String>(Response.FAIL_CODE, "request error:" + ThrowableUtil.toString(e));
       }
     }
 

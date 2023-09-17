@@ -1,7 +1,7 @@
 package com.xxl.job.core.executor;
 
-import com.xxl.job.core.biz.AdminBiz;
-import com.xxl.job.core.biz.client.AdminBizClient;
+import com.xxl.job.common.biz.AdminBiz;
+import com.xxl.job.core.biz.client.AdminBizClientImpl;
 import com.xxl.job.core.handler.IJobHandler;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import com.xxl.job.core.handler.impl.MethodJobHandler;
@@ -126,11 +126,11 @@ public class XxlJobExecutor {
   private static List<AdminBiz> adminBizList;
 
   private void initAdminBizList(String adminAddresses, String accessToken) throws Exception {
-    if (adminAddresses != null && adminAddresses.trim().length() > 0) {
+    if (adminAddresses != null && !adminAddresses.trim().isEmpty()) {
       for (String address : adminAddresses.trim().split(",")) {
         if (address != null && address.trim().length() > 0) {
 
-          AdminBiz adminBiz = new AdminBizClient(address.trim(), accessToken);
+          AdminBiz adminBiz = new AdminBizClientImpl(address.trim(), accessToken);
 
           if (adminBizList == null) {
             adminBizList = new ArrayList<AdminBiz>();

@@ -6,7 +6,7 @@ import com.xxl.job.admin.core.model.XxlJobLog;
 import com.xxl.job.admin.core.thread.JobTriggerPoolHelper;
 import com.xxl.job.admin.core.trigger.TriggerTypeEnum;
 import com.xxl.job.admin.core.util.I18nUtil;
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import com.xxl.job.core.context.XxlJobContext;
 import java.text.MessageFormat;
 import org.slf4j.Logger;
@@ -64,7 +64,7 @@ public class XxlJobCompleter {
           if (childJobId > 0) {
 
             JobTriggerPoolHelper.trigger(childJobId, TriggerTypeEnum.PARENT, -1, null, null, null);
-            ReturnT<String> triggerChildResult = ReturnT.SUCCESS;
+            Response<String> triggerChildResult = Response.SUCCESS;
 
             // add msg
             triggerChildMsg += MessageFormat.format(
@@ -72,7 +72,7 @@ public class XxlJobCompleter {
                 (i + 1),
                 childJobIds.length,
                 childJobIds[i],
-                (triggerChildResult.getCode() == ReturnT.SUCCESS_CODE ? I18nUtil.getString(
+                (triggerChildResult.getCode() == Response.SUCCESS_CODE ? I18nUtil.getString(
                     "system_success") : I18nUtil.getString("system_fail")),
                 triggerChildResult.getMsg());
           } else {

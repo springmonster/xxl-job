@@ -7,29 +7,29 @@ import java.io.Serializable;
  * @author xuxueli 2015-12-4 16:32:31
  * @param <T>
  */
-public class ReturnT<T> implements Serializable {
+public class Response<T> implements Serializable {
 
   private static final long serialVersionUID = 42L;
 
   public static final int SUCCESS_CODE = 200;
   public static final int FAIL_CODE = 500;
 
-  public static final ReturnT<String> SUCCESS = new ReturnT<>(null);
-  public static final ReturnT<String> FAIL = new ReturnT<>(FAIL_CODE, null);
+  public static final Response<String> SUCCESS = new Response<>(null);
+  public static final Response<String> FAIL = new Response<>(FAIL_CODE, null);
 
   private int code;
   private String msg;
   private T content;
 
-  public ReturnT() {
+  public Response() {
   }
 
-  public ReturnT(int code, String msg) {
+  public Response(int code, String msg) {
     this.code = code;
     this.msg = msg;
   }
 
-  public ReturnT(T content) {
+  public Response(T content) {
     this.code = SUCCESS_CODE;
     this.content = content;
   }

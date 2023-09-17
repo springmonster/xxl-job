@@ -6,7 +6,7 @@ import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobInfo;
 import com.xxl.job.admin.core.model.XxlJobLog;
 import com.xxl.job.admin.core.util.I18nUtil;
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -41,10 +41,10 @@ public class EmailJobAlarm implements JobAlarm {
 
       // alarmContent
       String alarmContent = "Alarm Job LogId=" + jobLog.getId();
-      if (jobLog.getTriggerCode() != ReturnT.SUCCESS_CODE) {
+      if (jobLog.getTriggerCode() != Response.SUCCESS_CODE) {
         alarmContent += "<br>TriggerMsg=<br>" + jobLog.getTriggerMsg();
       }
-      if (jobLog.getHandleCode() > 0 && jobLog.getHandleCode() != ReturnT.SUCCESS_CODE) {
+      if (jobLog.getHandleCode() > 0 && jobLog.getHandleCode() != Response.SUCCESS_CODE) {
         alarmContent += "<br>HandleCode=" + jobLog.getHandleMsg();
       }
 

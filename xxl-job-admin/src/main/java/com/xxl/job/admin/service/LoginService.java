@@ -5,7 +5,7 @@ import com.xxl.job.admin.core.util.CookieUtil;
 import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.admin.core.util.JacksonUtil;
 import com.xxl.job.admin.dao.XxlJobUserDao;
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import java.math.BigInteger;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -42,30 +42,30 @@ public class LoginService {
   }
 
 
-  public ReturnT<String> login(HttpServletRequest request, HttpServletResponse response,
+  public Response<String> login(HttpServletRequest request, HttpServletResponse response,
       String username, String password, boolean ifRemember) {
 
     // param
     if (username == null || username.trim().length() == 0 || password == null
         || password.trim().length() == 0) {
-      return new ReturnT<String>(500, I18nUtil.getString("login_param_empty"));
+      return new Response<String>(500, I18nUtil.getString("login_param_empty"));
     }
 
     // valid passowrd
     XxlJobUser xxlJobUser = xxlJobUserDao.loadByUserName(username);
     if (xxlJobUser == null) {
-      return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
+      return new Response<String>(500, I18nUtil.getString("login_param_unvalid"));
     }
     String passwordMd5 = DigestUtils.md5DigestAsHex(password.getBytes());
     if (!passwordMd5.equals(xxlJobUser.getPassword())) {
-      return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
+      return new Response<String>(500, I18nUtil.getString("login_param_unvalid"));
     }
 
     String loginToken = makeToken(xxlJobUser);
 
     // do login
     CookieUtil.set(response, LOGIN_IDENTITY_KEY, loginToken, ifRemember);
-    return ReturnT.SUCCESS;
+    return Response.SUCCESS;
   }
 
   /**
@@ -74,9 +74,9 @@ public class LoginService {
    * @param request
    * @param response
    */
-  public ReturnT<String> logout(HttpServletRequest request, HttpServletResponse response) {
+  public Response<String> logout(HttpServletRequest request, HttpServletResponse response) {
     CookieUtil.remove(request, response, LOGIN_IDENTITY_KEY);
-    return ReturnT.SUCCESS;
+    return Response.SUCCESS;
   }
 
   /**

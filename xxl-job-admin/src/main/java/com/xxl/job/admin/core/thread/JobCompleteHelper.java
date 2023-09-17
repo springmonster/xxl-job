@@ -4,8 +4,8 @@ import com.xxl.job.admin.core.complete.XxlJobCompleter;
 import com.xxl.job.admin.core.conf.XxlJobAdminConfig;
 import com.xxl.job.admin.core.model.XxlJobLog;
 import com.xxl.job.admin.core.util.I18nUtil;
-import com.xxl.job.common.model.ReturnT;
-import com.xxl.job.core.biz.model.HandleCallbackParam;
+import com.xxl.job.common.model.Response;
+import com.xxl.job.common.model.HandleCallbackParam;
 import com.xxl.job.core.util.DateUtil;
 import java.util.Date;
 import java.util.List;
@@ -93,7 +93,7 @@ public class JobCompleteHelper {
                 jobLog.setId(logId);
 
                 jobLog.setHandleTime(new Date());
-                jobLog.setHandleCode(ReturnT.FAIL_CODE);
+                jobLog.setHandleCode(Response.FAIL_CODE);
                 jobLog.setHandleMsg(I18nUtil.getString("joblog_lost_fail"));
 
                 XxlJobCompleter.updateHandleInfoAndFinish(jobLog);
@@ -142,33 +142,33 @@ public class JobCompleteHelper {
 
   // ---------------------- helper ----------------------
 
-  public ReturnT<String> callback(List<HandleCallbackParam> callbackParamList) {
+  public Response<String> callback(List<HandleCallbackParam> callbackParamList) {
 
     callbackThreadPool.execute(new Runnable() {
       @Override
       public void run() {
         for (HandleCallbackParam handleCallbackParam : callbackParamList) {
-          ReturnT<String> callbackResult = callback(handleCallbackParam);
+          Response<String> callbackResult = callback(handleCallbackParam);
           logger.debug(
               ">>>>>>>>> JobApiController.callback {}, handleCallbackParam={}, callbackResult={}",
-              (callbackResult.getCode() == ReturnT.SUCCESS_CODE ? "success" : "fail"),
+              (callbackResult.getCode() == Response.SUCCESS_CODE ? "success" : "fail"),
               handleCallbackParam, callbackResult);
         }
       }
     });
 
-    return ReturnT.SUCCESS;
+    return Response.SUCCESS;
   }
 
-  private ReturnT<String> callback(HandleCallbackParam handleCallbackParam) {
+  private Response<String> callback(HandleCallbackParam handleCallbackParam) {
     // valid log item
     XxlJobLog log = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao()
         .load(handleCallbackParam.getLogId());
     if (log == null) {
-      return new ReturnT<String>(ReturnT.FAIL_CODE, "log item not found.");
+      return new Response<String>(Response.FAIL_CODE, "log item not found.");
     }
     if (log.getHandleCode() > 0) {
-      return new ReturnT<String>(ReturnT.FAIL_CODE,
+      return new Response<String>(Response.FAIL_CODE,
           "log repeate callback.");     // avoid repeat callback, trigger child job etc
     }
 
@@ -187,7 +187,7 @@ public class JobCompleteHelper {
     log.setHandleMsg(handleMsg.toString());
     XxlJobCompleter.updateHandleInfoAndFinish(log);
 
-    return ReturnT.SUCCESS;
+    return Response.SUCCESS;
   }
 
 

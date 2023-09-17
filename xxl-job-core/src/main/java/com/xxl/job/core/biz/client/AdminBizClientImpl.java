@@ -1,9 +1,9 @@
 package com.xxl.job.core.biz.client;
 
-import com.xxl.job.common.model.ReturnT;
-import com.xxl.job.core.biz.AdminBiz;
-import com.xxl.job.core.biz.model.HandleCallbackParam;
-import com.xxl.job.core.biz.model.RegistryParam;
+import com.xxl.job.common.biz.AdminBiz;
+import com.xxl.job.common.model.HandleCallbackParam;
+import com.xxl.job.common.model.RegistryParam;
+import com.xxl.job.common.model.Response;
 import com.xxl.job.core.util.XxlJobRemotingUtil;
 import java.util.List;
 
@@ -12,12 +12,12 @@ import java.util.List;
  *
  * @author xuxueli 2017-07-28 22:14:52
  */
-public class AdminBizClient implements AdminBiz {
+public class AdminBizClientImpl implements AdminBiz {
 
-  public AdminBizClient() {
+  public AdminBizClientImpl() {
   }
 
-  public AdminBizClient(String addressUrl, String accessToken) {
+  public AdminBizClientImpl(String addressUrl, String accessToken) {
     this.addressUrl = addressUrl;
     this.accessToken = accessToken;
 
@@ -33,19 +33,22 @@ public class AdminBizClient implements AdminBiz {
 
 
   @Override
-  public ReturnT<String> callback(List<HandleCallbackParam> callbackParamList) {
+  @SuppressWarnings("unchecked")
+  public Response<String> callback(List<HandleCallbackParam> callbackParamList) {
     return XxlJobRemotingUtil.postBody(addressUrl + "api/callback", accessToken, timeout,
         callbackParamList, String.class);
   }
 
   @Override
-  public ReturnT<String> registry(RegistryParam registryParam) {
+  @SuppressWarnings("unchecked")
+  public Response<String> registry(RegistryParam registryParam) {
     return XxlJobRemotingUtil.postBody(addressUrl + "api/registry", accessToken, timeout,
         registryParam, String.class);
   }
 
   @Override
-  public ReturnT<String> registryRemove(RegistryParam registryParam) {
+  @SuppressWarnings("unchecked")
+  public Response<String> registryRemove(RegistryParam registryParam) {
     return XxlJobRemotingUtil.postBody(addressUrl + "api/registryRemove", accessToken, timeout,
         registryParam, String.class);
   }

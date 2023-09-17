@@ -1,8 +1,8 @@
 package com.xxl.job.core.thread;
 
-import com.xxl.job.common.model.ReturnT;
-import com.xxl.job.core.biz.AdminBiz;
-import com.xxl.job.core.biz.model.RegistryParam;
+import com.xxl.job.common.model.Response;
+import com.xxl.job.common.biz.AdminBiz;
+import com.xxl.job.common.model.RegistryParam;
 import com.xxl.job.core.enums.RegistryConfig;
 import com.xxl.job.core.executor.XxlJobExecutor;
 import java.util.concurrent.TimeUnit;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ExecutorRegistryThread {
 
-  private static Logger logger = LoggerFactory.getLogger(ExecutorRegistryThread.class);
+  private static final Logger logger = LoggerFactory.getLogger(ExecutorRegistryThread.class);
 
   private static ExecutorRegistryThread instance = new ExecutorRegistryThread();
 
@@ -48,9 +48,9 @@ public class ExecutorRegistryThread {
                 RegistryConfig.RegistType.EXECUTOR.name(), appname, address);
             for (AdminBiz adminBiz : XxlJobExecutor.getAdminBizList()) {
               try {
-                ReturnT<String> registryResult = adminBiz.registry(registryParam);
-                if (registryResult != null && ReturnT.SUCCESS_CODE == registryResult.getCode()) {
-                  registryResult = ReturnT.SUCCESS;
+                Response<String> registryResult = adminBiz.registry(registryParam);
+                if (registryResult != null && Response.SUCCESS_CODE == registryResult.getCode()) {
+                  registryResult = Response.SUCCESS;
                   logger.debug(
                       ">>>>>>>>>>> xxl-job registry success, registryParam:{}, registryResult:{}",
                       new Object[]{registryParam, registryResult});
@@ -91,9 +91,9 @@ public class ExecutorRegistryThread {
               appname, address);
           for (AdminBiz adminBiz : XxlJobExecutor.getAdminBizList()) {
             try {
-              ReturnT<String> registryResult = adminBiz.registryRemove(registryParam);
-              if (registryResult != null && ReturnT.SUCCESS_CODE == registryResult.getCode()) {
-                registryResult = ReturnT.SUCCESS;
+              Response<String> registryResult = adminBiz.registryRemove(registryParam);
+              if (registryResult != null && Response.SUCCESS_CODE == registryResult.getCode()) {
+                registryResult = Response.SUCCESS;
                 logger.info(
                     ">>>>>>>>>>> xxl-job registry-remove success, registryParam:{}, registryResult:{}",
                     new Object[]{registryParam, registryResult});

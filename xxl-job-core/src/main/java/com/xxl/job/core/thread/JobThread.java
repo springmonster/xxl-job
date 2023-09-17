@@ -1,7 +1,7 @@
 package com.xxl.job.core.thread;
 
-import com.xxl.job.common.model.ReturnT;
-import com.xxl.job.core.biz.model.HandleCallbackParam;
+import com.xxl.job.common.model.Response;
+import com.xxl.job.common.model.HandleCallbackParam;
 import com.xxl.job.core.biz.model.TriggerParam;
 import com.xxl.job.core.context.XxlJobContext;
 import com.xxl.job.core.context.XxlJobHelper;
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JobThread extends Thread {
 
-  private static Logger logger = LoggerFactory.getLogger(JobThread.class);
+  private static final Logger logger = LoggerFactory.getLogger(JobThread.class);
 
   private int jobId;
   private IJobHandler handler;
@@ -62,17 +62,17 @@ public class JobThread extends Thread {
    * @param triggerParam
    * @return
    */
-  public ReturnT<String> pushTriggerQueue(TriggerParam triggerParam) {
+  public Response<String> pushTriggerQueue(TriggerParam triggerParam) {
     // avoid repeat
     if (triggerLogIdSet.contains(triggerParam.getLogId())) {
       logger.info(">>>>>>>>>>> repeate trigger job, logId:{}", triggerParam.getLogId());
-      return new ReturnT<String>(ReturnT.FAIL_CODE,
+      return new Response<String>(Response.FAIL_CODE,
           "repeate trigger job, logId:" + triggerParam.getLogId());
     }
 
     triggerLogIdSet.add(triggerParam.getLogId());
     triggerQueue.add(triggerParam);
-    return ReturnT.SUCCESS;
+    return Response.SUCCESS;
   }
 
   /**

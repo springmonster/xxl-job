@@ -1,6 +1,6 @@
 package com.xxl.job.core.biz;
 
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import com.xxl.job.core.biz.model.IdleBeatParam;
 import com.xxl.job.core.biz.model.KillParam;
 import com.xxl.job.core.biz.model.LogParam;
@@ -16,7 +16,7 @@ public interface ExecutorBiz {
    * beat
    * @return
    */
-  ReturnT<String> beat();
+  Response<String> beat();
 
   /**
    * idle beat
@@ -24,27 +24,27 @@ public interface ExecutorBiz {
    * @param idleBeatParam
    * @return
    */
-  ReturnT<String> idleBeat(IdleBeatParam idleBeatParam);
+  Response<String> idleBeat(IdleBeatParam idleBeatParam);
 
   /**
    * run
    * @param triggerParam
    * @return
    */
-  ReturnT<String> run(TriggerParam triggerParam);
+  Response<String> run(TriggerParam triggerParam);
 
   /**
    * kill
    * @param killParam
    * @return
    */
-  ReturnT<String> kill(KillParam killParam);
+  Response<String> kill(KillParam killParam);
 
   /**
    * log
    * @param logParam
    * @return
    */
-  ReturnT<LogResult> log(LogParam logParam);
+  Response<LogResult> log(LogParam logParam);
 
 }

@@ -1,12 +1,12 @@
 package com.xxl.job.adminbiz;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.xxl.job.core.biz.AdminBiz;
-import com.xxl.job.core.biz.client.AdminBizClient;
-import com.xxl.job.core.biz.model.HandleCallbackParam;
-import com.xxl.job.core.biz.model.RegistryParam;
-import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.common.biz.AdminBiz;
+import com.xxl.job.common.model.HandleCallbackParam;
+import com.xxl.job.common.model.RegistryParam;
+import com.xxl.job.common.model.Response;
+import com.xxl.job.core.biz.client.AdminBizClientImpl;
 import com.xxl.job.core.context.XxlJobContext;
 import com.xxl.job.core.enums.RegistryConfig;
 import java.util.Arrays;
@@ -21,13 +21,13 @@ import org.junit.jupiter.api.Test;
 public class AdminBizTest {
 
   // admin-client
-  private static String addressUrl = "http://127.0.0.1:8080/xxl-job-admin/";
-  private static String accessToken = null;
+  private static final String addressUrl = "http://127.0.0.1:10000/xxl-job-admin/";
+  private static final String accessToken = "default_token";
 
 
   @Test
-  public void callback() throws Exception {
-    AdminBiz adminBiz = new AdminBizClient(addressUrl, accessToken);
+  public void callback() {
+    AdminBiz adminBiz = new AdminBizClientImpl(addressUrl, accessToken);
 
     HandleCallbackParam param = new HandleCallbackParam();
     param.setLogId(1);
@@ -35,42 +35,38 @@ public class AdminBizTest {
 
     List<HandleCallbackParam> callbackParamList = Arrays.asList(param);
 
-    ReturnT<String> returnT = adminBiz.callback(callbackParamList);
+    Response<String> response = adminBiz.callback(callbackParamList);
 
-    assertTrue(returnT.getCode() == ReturnT.SUCCESS_CODE);
+    assertEquals(Response.SUCCESS_CODE, response.getCode());
   }
 
   /**
    * registry executor
    *
-   * @throws Exception
    */
   @Test
-  public void registry() throws Exception {
-    AdminBiz adminBiz = new AdminBizClient(addressUrl, accessToken);
+  public void registry() {
+    AdminBiz adminBiz = new AdminBizClientImpl(addressUrl, accessToken);
 
     RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(),
-        "xxl-job-executor-example", "127.0.0.1:9999");
-    ReturnT<String> returnT = adminBiz.registry(registryParam);
+        "xxl-job-executor-example-test", "127.0.0.1:9999");
+    Response<String> response = adminBiz.registry(registryParam);
 
-    assertTrue(returnT.getCode() == ReturnT.SUCCESS_CODE);
+    assertEquals(Response.SUCCESS_CODE, response.getCode());
   }
 
   /**
    * registry executor remove
    *
-   * @throws Exception
    */
   @Test
-  public void registryRemove() throws Exception {
-    AdminBiz adminBiz = new AdminBizClient(addressUrl, accessToken);
+  public void registryRemove() {
+    AdminBiz adminBiz = new AdminBizClientImpl(addressUrl, accessToken);
 
     RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(),
-        "xxl-job-executor-example", "127.0.0.1:9999");
-    ReturnT<String> returnT = adminBiz.registryRemove(registryParam);
+        "xxl-job-executor-example-test", "127.0.0.1:9999");
+    Response<String> response = adminBiz.registryRemove(registryParam);
 
-    assertTrue(returnT.getCode() == ReturnT.SUCCESS_CODE);
-
+    assertEquals(Response.SUCCESS_CODE, response.getCode());
   }
-
 }

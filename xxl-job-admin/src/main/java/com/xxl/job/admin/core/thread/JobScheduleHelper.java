@@ -228,54 +228,51 @@ public class JobScheduleHelper {
     scheduleThread.start();
 
     // ring thread
-    ringThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
+    ringThread = new Thread(() -> {
 
-        while (!ringThreadToStop) {
+      while (!ringThreadToStop) {
 
-          // align second
-          try {
-            TimeUnit.MILLISECONDS.sleep(1000 - System.currentTimeMillis() % 1000);
-          } catch (InterruptedException e) {
-            if (!ringThreadToStop) {
-              logger.error(e.getMessage(), e);
-            }
-          }
-
-          try {
-            // second data
-            List<Integer> ringItemData = new ArrayList<>();
-            int nowSecond = Calendar.getInstance()
-                .get(Calendar.SECOND);   // 避免处理耗时太长，跨过刻度，向前校验一个刻度；
-            for (int i = 0; i < 2; i++) {
-              List<Integer> tmpData = ringData.remove((nowSecond + 60 - i) % 60);
-              if (tmpData != null) {
-                ringItemData.addAll(tmpData);
-              }
-            }
-
-            // ring trigger
-            logger.debug(
-                ">>>>>>>>>>> xxl-job, time-ring beat : " + nowSecond + " = " + Arrays.asList(
-                    ringItemData));
-            if (ringItemData.size() > 0) {
-              // do trigger
-              for (int jobId : ringItemData) {
-                // do trigger
-                JobTriggerPoolHelper.trigger(jobId, TriggerTypeEnum.CRON, -1, null, null, null);
-              }
-              // clear
-              ringItemData.clear();
-            }
-          } catch (Exception e) {
-            if (!ringThreadToStop) {
-              logger.error(">>>>>>>>>>> xxl-job, JobScheduleHelper#ringThread error:{}", e);
-            }
+        // align second
+        try {
+          TimeUnit.MILLISECONDS.sleep(1000 - System.currentTimeMillis() % 1000);
+        } catch (InterruptedException e) {
+          if (!ringThreadToStop) {
+            logger.error(e.getMessage(), e);
           }
         }
-        logger.info(">>>>>>>>>>> xxl-job, JobScheduleHelper#ringThread stop");
+
+        try {
+          // second data
+          List<Integer> ringItemData = new ArrayList<>();
+          int nowSecond = Calendar.getInstance()
+              .get(Calendar.SECOND);   // 避免处理耗时太长，跨过刻度，向前校验一个刻度；
+          for (int i = 0; i < 2; i++) {
+            List<Integer> tmpData = ringData.remove((nowSecond + 60 - i) % 60);
+            if (tmpData != null) {
+              ringItemData.addAll(tmpData);
+            }
+          }
+
+          // ring trigger
+          logger.debug(
+              ">>>>>>>>>>> xxl-job, time-ring beat : " + nowSecond + " = " + Arrays.asList(
+                  ringItemData));
+          if (ringItemData.size() > 0) {
+            // do trigger
+            for (int jobId : ringItemData) {
+              // do trigger
+              JobTriggerPoolHelper.trigger(jobId, TriggerTypeEnum.CRON, -1, null, null, null);
+            }
+            // clear
+            ringItemData.clear();
+          }
+        } catch (Exception e) {
+          if (!ringThreadToStop) {
+            logger.error(">>>>>>>>>>> xxl-job, JobScheduleHelper#ringThread error:{}", e);
+          }
+        }
       }
+      logger.info(">>>>>>>>>>> xxl-job, JobScheduleHelper#ringThread stop");
     });
     ringThread.setDaemon(true);
     ringThread.setName("xxl-job, admin JobScheduleHelper#ringThread");

@@ -1,8 +1,8 @@
 package com.xxl.job.core.thread;
 
-import com.xxl.job.common.model.ReturnT;
-import com.xxl.job.core.biz.AdminBiz;
-import com.xxl.job.core.biz.model.HandleCallbackParam;
+import com.xxl.job.common.biz.AdminBiz;
+import com.xxl.job.common.model.HandleCallbackParam;
+import com.xxl.job.common.model.Response;
 import com.xxl.job.core.context.XxlJobContext;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.enums.RegistryConfig;
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TriggerCallbackThread {
 
-  private static Logger logger = LoggerFactory.getLogger(TriggerCallbackThread.class);
+  private static final Logger logger = LoggerFactory.getLogger(TriggerCallbackThread.class);
 
   private static TriggerCallbackThread instance = new TriggerCallbackThread();
 
@@ -168,8 +168,8 @@ public class TriggerCallbackThread {
     // callback, will retry if error
     for (AdminBiz adminBiz : XxlJobExecutor.getAdminBizList()) {
       try {
-        ReturnT<String> callbackResult = adminBiz.callback(callbackParamList);
-        if (callbackResult != null && ReturnT.SUCCESS_CODE == callbackResult.getCode()) {
+        Response<String> callbackResult = adminBiz.callback(callbackParamList);
+        if (callbackResult != null && Response.SUCCESS_CODE == callbackResult.getCode()) {
           callbackLog(callbackParamList, "<br>----------- xxl-job job callback finish.");
           callbackRet = true;
           break;

@@ -7,7 +7,7 @@ import com.xxl.job.admin.core.model.XxlJobLog;
 import com.xxl.job.admin.core.route.ExecutorRouteStrategyEnum;
 import com.xxl.job.admin.core.scheduler.XxlJobScheduler;
 import com.xxl.job.admin.core.util.I18nUtil;
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import com.xxl.job.core.biz.ExecutorBiz;
 import com.xxl.job.core.biz.model.TriggerParam;
 import com.xxl.job.core.enums.ExecutorBlockStrategyEnum;
@@ -151,7 +151,7 @@ public class XxlJobTrigger {
 
     // 3、init address
     String address = null;
-    ReturnT<String> routeAddressResult = null;
+    Response<String> routeAddressResult = null;
     if (group.getRegistryList() != null && !group.getRegistryList().isEmpty()) {
       if (ExecutorRouteStrategyEnum.SHARDING_BROADCAST == executorRouteStrategyEnum) {
         if (index < group.getRegistryList().size()) {
@@ -162,21 +162,21 @@ public class XxlJobTrigger {
       } else {
         routeAddressResult = executorRouteStrategyEnum.getRouter()
             .route(triggerParam, group.getRegistryList());
-        if (routeAddressResult.getCode() == ReturnT.SUCCESS_CODE) {
+        if (routeAddressResult.getCode() == Response.SUCCESS_CODE) {
           address = routeAddressResult.getContent();
         }
       }
     } else {
-      routeAddressResult = new ReturnT<>(ReturnT.FAIL_CODE,
+      routeAddressResult = new Response<>(Response.FAIL_CODE,
           I18nUtil.getString("jobconf_trigger_address_empty"));
     }
 
     // 4、trigger remote executor
-    ReturnT<String> triggerResult;
+    Response<String> triggerResult;
     if (address != null) {
       triggerResult = runExecutor(triggerParam, address);
     } else {
-      triggerResult = new ReturnT<>(ReturnT.FAIL_CODE, null);
+      triggerResult = new Response<>(Response.FAIL_CODE, null);
     }
 
     // 5、collection trigger info
@@ -229,8 +229,8 @@ public class XxlJobTrigger {
    * @param address
    * @return
    */
-  public static ReturnT<String> runExecutor(TriggerParam triggerParam, String address) {
-    ReturnT<String> runResult;
+  public static Response<String> runExecutor(TriggerParam triggerParam, String address) {
+    Response<String> runResult;
     try {
       ExecutorBiz executorBiz = XxlJobScheduler.getExecutorBiz(address);
       runResult = executorBiz.run(triggerParam);
@@ -238,7 +238,7 @@ public class XxlJobTrigger {
       logger.error(
           ">>>>>>>>>>> xxl-job trigger error, please check if the executor[{}] is running.",
           address, e);
-      runResult = new ReturnT<>(ReturnT.FAIL_CODE, ThrowableUtil.toString(e));
+      runResult = new Response<>(Response.FAIL_CODE, ThrowableUtil.toString(e));
     }
 
     StringBuffer runResultSB = new StringBuffer(I18nUtil.getString("jobconf_trigger_run") + "：");

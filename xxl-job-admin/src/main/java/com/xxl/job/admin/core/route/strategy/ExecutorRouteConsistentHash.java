@@ -1,7 +1,7 @@
 package com.xxl.job.admin.core.route.strategy;
 
 import com.xxl.job.admin.core.route.ExecutorRouter;
-import com.xxl.job.common.model.ReturnT;
+import com.xxl.job.common.model.Response;
 import com.xxl.job.core.biz.model.TriggerParam;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -76,9 +76,9 @@ public class ExecutorRouteConsistentHash extends ExecutorRouter {
   }
 
   @Override
-  public ReturnT<String> route(TriggerParam triggerParam, List<String> addressList) {
+  public Response<String> route(TriggerParam triggerParam, List<String> addressList) {
     String address = hashJob(triggerParam.getJobId(), addressList);
-    return new ReturnT<String>(address);
+    return new Response<String>(address);
   }
 
 }
