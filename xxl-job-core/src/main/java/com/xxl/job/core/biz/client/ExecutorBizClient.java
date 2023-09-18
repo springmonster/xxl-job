@@ -11,6 +11,7 @@ import com.xxl.job.core.util.XxlJobRemotingUtil;
 
 /**
  * admin api test
+ * 为什么admin api会在client中？？？
  *
  * @author xuxueli 2017-07-28 22:14:52
  */

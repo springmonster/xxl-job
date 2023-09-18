@@ -19,7 +19,7 @@ public class ExecutorRouteBusyover extends ExecutorRouter {
     StringBuffer idleBeatResultSB = new StringBuffer();
     for (String address : addressList) {
       // beat
-      Response<String> idleBeatResult = null;
+      Response<String> idleBeatResult;
       try {
         ExecutorBiz executorBiz = XxlJobScheduler.getExecutorBiz(address);
         idleBeatResult = executorBiz.idleBeat(new IdleBeatParam(triggerParam.getJobId()));

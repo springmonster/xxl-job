@@ -180,18 +180,15 @@ public class EmbedServer {
       String accessTokenReq = msg.headers().get(XxlJobRemotingUtil.XXL_JOB_ACCESS_TOKEN);
 
       // invoke
-      bizThreadPool.execute(new Runnable() {
-        @Override
-        public void run() {
-          // do invoke
-          Object responseObj = process(httpMethod, uri, requestData, accessTokenReq);
+      bizThreadPool.execute(() -> {
+        // do invoke
+        Object responseObj = process(httpMethod, uri, requestData, accessTokenReq);
 
-          // to json
-          String responseJson = GsonTool.toJson(responseObj);
+        // to json
+        String responseJson = GsonTool.toJson(responseObj);
 
-          // write response
-          writeResponse(ctx, keepAlive, responseJson);
-        }
+        // write response
+        writeResponse(ctx, keepAlive, responseJson);
       });
     }
 
@@ -201,11 +198,11 @@ public class EmbedServer {
       if (HttpMethod.POST != httpMethod) {
         return new Response<String>(Response.FAIL_CODE, "invalid request, HttpMethod not support.");
       }
-      if (uri == null || uri.trim().length() == 0) {
+      if (uri == null || uri.trim().isEmpty()) {
         return new Response<String>(Response.FAIL_CODE, "invalid request, uri-mapping empty.");
       }
       if (accessToken != null
-          && accessToken.trim().length() > 0
+          && !accessToken.trim().isEmpty()
           && !accessToken.equals(accessTokenReq)) {
         return new Response<String>(Response.FAIL_CODE, "The access token is wrong.");
       }
