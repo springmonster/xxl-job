@@ -12,7 +12,7 @@ public enum ExecutorBlockStrategyEnum {
 
   private String title;
 
-  private ExecutorBlockStrategyEnum(String title) {
+  ExecutorBlockStrategyEnum(String title) {
     this.title = title;
   }
 
