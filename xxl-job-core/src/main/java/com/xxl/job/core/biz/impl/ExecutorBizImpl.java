@@ -43,7 +43,8 @@ public class ExecutorBizImpl implements ExecutorBiz {
     }
 
     if (isRunningOrHasQueue) {
-      return new Response<String>(Response.FAIL_CODE, "job thread is running or has trigger queue.");
+      return new Response<String>(Response.FAIL_CODE,
+          "job thread is running or has trigger queue.");
     }
     return Response.SUCCESS;
   }
@@ -102,7 +103,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
           jobHandler = new GlueJobHandler(originJobHandler, triggerParam.getGlueUpdatetime());
         } catch (Exception e) {
           logger.error(e.getMessage(), e);
-          return new Response<String>(Response.FAIL_CODE, e.getMessage());
+          return new Response<>(Response.FAIL_CODE, e.getMessage());
         }
       }
     } else if (glueTypeEnum != null && glueTypeEnum.isScript()) {
@@ -125,7 +126,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
             triggerParam.getGlueSource(), GlueTypeEnum.match(triggerParam.getGlueType()));
       }
     } else {
-      return new Response<String>(Response.FAIL_CODE,
+      return new Response<>(Response.FAIL_CODE,
           "glueType[" + triggerParam.getGlueType() + "] is not valid.");
     }
 
@@ -136,7 +137,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
       if (ExecutorBlockStrategyEnum.DISCARD_LATER == blockStrategy) {
         // discard when running
         if (jobThread.isRunningOrHasQueue()) {
-          return new Response<String>(Response.FAIL_CODE,
+          return new Response<>(Response.FAIL_CODE,
               "block strategy effect：" + ExecutorBlockStrategyEnum.DISCARD_LATER.getTitle());
         }
       } else if (ExecutorBlockStrategyEnum.COVER_EARLY == blockStrategy) {
@@ -172,7 +173,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
       return Response.SUCCESS;
     }
 
-    return new Response<String>(Response.SUCCESS_CODE, "job thread already killed.");
+    return new Response<>(Response.SUCCESS_CODE, "job thread already killed.");
   }
 
   @Override
@@ -182,7 +183,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
         logParam.getLogId());
 
     LogResult logResult = XxlJobFileAppender.readLog(logFileName, logParam.getFromLineNum());
-    return new Response<LogResult>(logResult);
+    return new Response<>(logResult);
   }
 
 }
