@@ -89,7 +89,7 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
     for (String beanDefinitionName : beanDefinitionNames) {
 
       // get bean
-      Object bean = null;
+      Object bean;
       Lazy onBean = applicationContext.findAnnotationOnBean(beanDefinitionName, Lazy.class);
       if (onBean != null) {
         logger.debug("xxl-job annotation scan, skip @Lazy Bean:{}", beanDefinitionName);
@@ -120,7 +120,7 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
       for (Map.Entry<Method, XxlJob> methodXxlJobEntry : annotatedMethods.entrySet()) {
         Method executeMethod = methodXxlJobEntry.getKey();
         XxlJob xxlJob = methodXxlJobEntry.getValue();
-        // regist
+        // register jobhandler
         registJobHandler(xxlJob, bean, executeMethod);
       }
 

@@ -1,7 +1,7 @@
 package com.xxl.job.core.thread;
 
-import com.xxl.job.common.model.Response;
 import com.xxl.job.common.model.HandleCallbackParam;
+import com.xxl.job.common.model.Response;
 import com.xxl.job.core.biz.model.TriggerParam;
 import com.xxl.job.core.context.XxlJobContext;
 import com.xxl.job.core.context.XxlJobHelper;
@@ -191,7 +191,7 @@ public class JobThread extends Thread {
 
         } else {
           if (idleTimes > 30) {
-            if (triggerQueue.size() == 0) {  // avoid concurrent trigger causes jobId-lost
+            if (triggerQueue.isEmpty()) {  // avoid concurrent trigger causes jobId-lost
               XxlJobExecutor.removeJobThread(jobId, "excutor idel times over limit.");
             }
           }

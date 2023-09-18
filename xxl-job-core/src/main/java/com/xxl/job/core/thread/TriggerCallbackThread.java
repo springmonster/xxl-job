@@ -26,7 +26,7 @@ public class TriggerCallbackThread {
 
   private static final Logger logger = LoggerFactory.getLogger(TriggerCallbackThread.class);
 
-  private static TriggerCallbackThread instance = new TriggerCallbackThread();
+  private static final TriggerCallbackThread instance = new TriggerCallbackThread();
 
   public static TriggerCallbackThread getInstance() {
     return instance;
@@ -75,7 +75,7 @@ public class TriggerCallbackThread {
               callbackParamList.add(callback);
 
               // callback, will retry if error
-              if (callbackParamList != null && callbackParamList.size() > 0) {
+              if (callbackParamList != null) {
                 doCallback(callbackParamList);
               }
             }
@@ -88,9 +88,9 @@ public class TriggerCallbackThread {
 
         // last callback
         try {
-          List<HandleCallbackParam> callbackParamList = new ArrayList<HandleCallbackParam>();
+          List<HandleCallbackParam> callbackParamList = new ArrayList<>();
           int drainToNum = getInstance().callBackQueue.drainTo(callbackParamList);
-          if (callbackParamList != null && callbackParamList.size() > 0) {
+          if (!callbackParamList.isEmpty()) {
             doCallback(callbackParamList);
           }
         } catch (Exception e) {
@@ -107,28 +107,25 @@ public class TriggerCallbackThread {
     triggerCallbackThread.start();
 
     // retry
-    triggerRetryCallbackThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        while (!toStop) {
-          try {
-            retryFailCallbackFile();
-          } catch (Exception e) {
-            if (!toStop) {
-              logger.error(e.getMessage(), e);
-            }
-
+    triggerRetryCallbackThread = new Thread(() -> {
+      while (!toStop) {
+        try {
+          retryFailCallbackFile();
+        } catch (Exception e) {
+          if (!toStop) {
+            logger.error(e.getMessage(), e);
           }
-          try {
-            TimeUnit.SECONDS.sleep(RegistryConfig.BEAT_TIMEOUT);
-          } catch (InterruptedException e) {
-            if (!toStop) {
-              logger.error(e.getMessage(), e);
-            }
+
+        }
+        try {
+          TimeUnit.SECONDS.sleep(RegistryConfig.BEAT_TIMEOUT);
+        } catch (InterruptedException e) {
+          if (!toStop) {
+            logger.error(e.getMessage(), e);
           }
         }
-        logger.info(">>>>>>>>>>> xxl-job, executor retry callback thread destroy.");
       }
+      logger.info(">>>>>>>>>>> xxl-job, executor retry callback thread destroy.");
     });
     triggerRetryCallbackThread.setDaemon(true);
     triggerRetryCallbackThread.start();

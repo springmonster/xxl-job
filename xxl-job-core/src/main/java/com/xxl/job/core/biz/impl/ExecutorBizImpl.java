@@ -75,7 +75,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
       if (jobHandler == null) {
         jobHandler = newJobHandler;
         if (jobHandler == null) {
-          return new Response<String>(Response.FAIL_CODE,
+          return new Response<>(Response.FAIL_CODE,
               "job handler [" + triggerParam.getExecutorHandler() + "] not found.");
         }
       }

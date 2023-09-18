@@ -207,7 +207,7 @@ public class XxlJobExecutor {
     //make and simplify the variables since they'll be called several times later
     Class<?> clazz = bean.getClass();
     String methodName = executeMethod.getName();
-    if (name.trim().length() == 0) {
+    if (name.trim().isEmpty()) {
       throw new RuntimeException(
           "xxl-job method-jobhandler name invalid, for[" + clazz + "#" + methodName + "] .");
     }
@@ -231,7 +231,7 @@ public class XxlJobExecutor {
     Method initMethod = null;
     Method destroyMethod = null;
 
-    if (xxlJob.init().trim().length() > 0) {
+    if (!xxlJob.init().trim().isEmpty()) {
       try {
         initMethod = clazz.getDeclaredMethod(xxlJob.init());
         initMethod.setAccessible(true);
@@ -241,7 +241,7 @@ public class XxlJobExecutor {
                 + "] .");
       }
     }
-    if (xxlJob.destroy().trim().length() > 0) {
+    if (!xxlJob.destroy().trim().isEmpty()) {
       try {
         destroyMethod = clazz.getDeclaredMethod(xxlJob.destroy());
         destroyMethod.setAccessible(true);
@@ -254,7 +254,6 @@ public class XxlJobExecutor {
 
     // registry jobhandler
     registJobHandler(name, new MethodJobHandler(bean, executeMethod, initMethod, destroyMethod));
-
   }
 
 
