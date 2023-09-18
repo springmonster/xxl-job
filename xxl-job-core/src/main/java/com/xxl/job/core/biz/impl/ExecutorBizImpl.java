@@ -80,7 +80,6 @@ public class ExecutorBizImpl implements ExecutorBiz {
               "job handler [" + triggerParam.getExecutorHandler() + "] not found.");
         }
       }
-
     } else if (GlueTypeEnum.GLUE_GROOVY == glueTypeEnum) {
 
       // valid old jobThread
@@ -160,8 +159,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
     }
 
     // push data to queue
-    Response<String> pushResult = jobThread.pushTriggerQueue(triggerParam);
-    return pushResult;
+    return jobThread.pushTriggerQueue(triggerParam);
   }
 
   @Override

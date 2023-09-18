@@ -47,6 +47,7 @@ public class ExecutorBizClient implements ExecutorBiz {
 
   @Override
   public Response<String> run(TriggerParam triggerParam) {
+    // kuanghc admin发送请求，client执行任务
     return XxlJobRemotingUtil.postBody(addressUrl + "run", accessToken, timeout, triggerParam,
         String.class);
   }

@@ -66,7 +66,7 @@ public class JobThread extends Thread {
     // avoid repeat
     if (triggerLogIdSet.contains(triggerParam.getLogId())) {
       logger.info(">>>>>>>>>>> repeate trigger job, logId:{}", triggerParam.getLogId());
-      return new Response<String>(Response.FAIL_CODE,
+      return new Response<>(Response.FAIL_CODE,
           "repeate trigger job, logId:" + triggerParam.getLogId());
     }
 

@@ -21,6 +21,7 @@ public class MethodJobHandler extends IJobHandler {
     this.destroyMethod = destroyMethod;
   }
 
+  // kuanghc 使用反射执行任务
   @Override
   public void execute() throws Exception {
     Class<?>[] paramTypes = method.getParameterTypes();
