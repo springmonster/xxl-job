@@ -63,7 +63,7 @@ public class XxlJobTrigger {
         .load(jobInfo.getJobGroup());
 
     // cover addressList
-    if (addressList != null && addressList.trim().length() > 0) {
+    if (addressList != null && !addressList.trim().isEmpty()) {
       group.setAddressType(1);
       group.setAddressList(addressList.trim());
     }

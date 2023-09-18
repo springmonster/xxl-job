@@ -22,6 +22,7 @@ public class ExecutorRouteFailover extends ExecutorRouter {
       Response<String> beatResult;
       try {
         ExecutorBiz executorBiz = XxlJobScheduler.getExecutorBiz(address);
+        // kuanghc admin路由client instances，发送心跳请求
         beatResult = executorBiz.beat();
       } catch (Exception e) {
         logger.error(e.getMessage(), e);

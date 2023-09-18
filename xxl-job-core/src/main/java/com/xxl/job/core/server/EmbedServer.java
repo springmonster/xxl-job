@@ -2,7 +2,7 @@ package com.xxl.job.core.server;
 
 import com.xxl.job.common.model.Response;
 import com.xxl.job.core.biz.ExecutorBiz;
-import com.xxl.job.core.biz.impl.ExecutorBizImpl;
+import com.xxl.job.core.biz.impl.ExecutorBizClientImpl;
 import com.xxl.job.core.biz.model.IdleBeatParam;
 import com.xxl.job.core.biz.model.KillParam;
 import com.xxl.job.core.biz.model.LogParam;
@@ -58,7 +58,7 @@ public class EmbedServer {
 
   public void start(final String address, final int port, final String appname,
       final String accessToken) {
-    executorBiz = new ExecutorBizImpl();
+    executorBiz = new ExecutorBizClientImpl();
     thread = new Thread(() -> {
       // param
       EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -169,8 +169,7 @@ public class EmbedServer {
     }
 
     @Override
-    protected void channelRead0(final ChannelHandlerContext ctx, FullHttpRequest msg)
-        throws Exception {
+    protected void channelRead0(final ChannelHandlerContext ctx, FullHttpRequest msg) {
       // request parse
       //final byte[] requestBytes = ByteBufUtil.getBytes(msg.content());    // byteBuf.toString(io.netty.util.CharsetUtil.UTF_8);
       String requestData = msg.content().toString(CharsetUtil.UTF_8);
@@ -207,6 +206,7 @@ public class EmbedServer {
         return new Response<String>(Response.FAIL_CODE, "The access token is wrong.");
       }
 
+      // kuanghc 这里应该是admin调用client端的uri
       // services mapping
       try {
         switch (uri) {
