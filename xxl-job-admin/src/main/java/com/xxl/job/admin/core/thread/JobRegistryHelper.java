@@ -6,6 +6,7 @@ import com.xxl.job.admin.core.model.XxlJobRegistry;
 import com.xxl.job.common.model.RegistryParam;
 import com.xxl.job.common.model.Response;
 import com.xxl.job.core.enums.RegistryConfig;
+import com.xxl.job.core.enums.RegistryConfig.RegisterType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -76,7 +77,7 @@ public class JobRegistryHelper {
                 .findAll(RegistryConfig.DEAD_TIMEOUT, new Date());
             if (list != null) {
               for (XxlJobRegistry item : list) {
-                if (RegistryConfig.RegistType.EXECUTOR.name().equals(item.getRegistryGroup())) {
+                if (RegisterType.EXECUTOR.name().equals(item.getRegistryGroup())) {
                   String appName = item.getRegistryKey();
                   List<String> registryList = appAddressMap.get(appName);
                   if (registryList == null) {
@@ -93,7 +94,7 @@ public class JobRegistryHelper {
 
             // fresh group address
             for (XxlJobGroup group : groupList) {
-              List<String> registryList = appAddressMap.get(group.getAppname());
+              List<String> registryList = appAddressMap.get(group.getAppName());
               String addressListStr = null;
               if (registryList != null && !registryList.isEmpty()) {
                 Collections.sort(registryList);
@@ -117,6 +118,7 @@ public class JobRegistryHelper {
           }
         }
         try {
+          // kuanghc 30秒检查一次状态
           TimeUnit.SECONDS.sleep(RegistryConfig.BEAT_TIMEOUT);
         } catch (InterruptedException e) {
           if (!toStop) {

@@ -25,14 +25,14 @@ public class ExecutorBizTest {
   private static String accessToken = null;
 
   @Test
-  public void beat() throws Exception {
+  public void beat() {
     ExecutorBiz executorBiz = new ExecutorBizClient(addressUrl, accessToken);
     // Act
     final Response<String> retval = executorBiz.beat();
 
     // Assert result
     Assertions.assertNotNull(retval);
-    Assertions.assertNull(((Response<String>) retval).getContent());
+    Assertions.assertNull(retval.getContent());
     Assertions.assertEquals(200, retval.getCode());
     Assertions.assertNull(retval.getMsg());
   }

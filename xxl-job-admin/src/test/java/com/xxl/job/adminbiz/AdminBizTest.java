@@ -8,7 +8,7 @@ import com.xxl.job.common.model.RegistryParam;
 import com.xxl.job.common.model.Response;
 import com.xxl.job.core.biz.client.AdminBizClientImpl;
 import com.xxl.job.core.context.XxlJobContext;
-import com.xxl.job.core.enums.RegistryConfig;
+import com.xxl.job.core.enums.RegistryConfig.RegisterType;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,7 @@ public class AdminBizTest {
   public void registry() {
     AdminBiz adminBiz = new AdminBizClientImpl(addressUrl, accessToken);
 
-    RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(),
+    RegistryParam registryParam = new RegistryParam(RegisterType.EXECUTOR.name(),
         "xxl-job-executor-example-test", "127.0.0.1:9999");
     Response<String> response = adminBiz.registry(registryParam);
 
@@ -63,7 +63,7 @@ public class AdminBizTest {
   public void registryRemove() {
     AdminBiz adminBiz = new AdminBizClientImpl(addressUrl, accessToken);
 
-    RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(),
+    RegistryParam registryParam = new RegistryParam(RegisterType.EXECUTOR.name(),
         "xxl-job-executor-example-test", "127.0.0.1:9999");
     Response<String> response = adminBiz.registryRemove(registryParam);
 

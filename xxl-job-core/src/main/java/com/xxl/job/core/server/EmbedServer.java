@@ -277,9 +277,9 @@ public class EmbedServer {
 
   // ---------------------- registry ----------------------
 
-  public void startRegistry(final String appname, final String address) {
+  public void startRegistry(final String appName, final String address) {
     // start registry
-    ExecutorRegistryThread.getInstance().start(appname, address);
+    ExecutorRegistryThread.getInstance().start(appName, address);
   }
 
   public void stopRegistry() {

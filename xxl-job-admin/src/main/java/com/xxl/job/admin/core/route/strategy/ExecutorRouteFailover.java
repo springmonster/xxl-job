@@ -19,7 +19,7 @@ public class ExecutorRouteFailover extends ExecutorRouter {
     StringBuffer beatResultSB = new StringBuffer();
     for (String address : addressList) {
       // beat
-      Response<String> beatResult = null;
+      Response<String> beatResult;
       try {
         ExecutorBiz executorBiz = XxlJobScheduler.getExecutorBiz(address);
         beatResult = executorBiz.beat();
@@ -41,7 +41,7 @@ public class ExecutorRouteFailover extends ExecutorRouter {
         return beatResult;
       }
     }
-    return new Response<String>(Response.FAIL_CODE, beatResultSB.toString());
+    return new Response<>(Response.FAIL_CODE, beatResultSB.toString());
 
   }
 }

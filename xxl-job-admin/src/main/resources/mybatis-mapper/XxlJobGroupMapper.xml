@@ -4,7 +4,7 @@
 <mapper namespace="com.xxl.job.admin.dao.XxlJobGroupDao">
   <resultMap id="XxlJobGroup" type="com.xxl.job.admin.core.model.XxlJobGroup">
     <result column="id" property="id"/>
-    <result column="app_name" property="appname"/>
+    <result column="app_name" property="appName"/>
     <result column="title" property="title"/>
     <result column="address_type" property="addressType"/>
     <result column="address_list" property="addressList"/>
@@ -37,13 +37,14 @@
 
   <insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobGroup" useGeneratedKeys="true"
     keyProperty="id">
-    INSERT INTO xxl_job.xxl_job_group (`app_name`, `title`, `address_type`, `address_list`, `update_time`)
-    values (#{appname}, #{title}, #{addressType}, #{addressList}, #{updateTime});
+    INSERT INTO xxl_job.xxl_job_group (`app_name`, `title`, `address_type`, `address_list`,
+    `update_time`)
+    values (#{appName}, #{title}, #{addressType}, #{addressList}, #{updateTime});
   </insert>
 
   <update id="update" parameterType="com.xxl.job.admin.core.model.XxlJobGroup">
     UPDATE xxl_job.xxl_job_group
-    SET `app_name` = #{appname},
+    SET `app_name` = #{appName},
     `title` = #{title},
     `address_type` = #{addressType},
     `address_list` = #{addressList},
