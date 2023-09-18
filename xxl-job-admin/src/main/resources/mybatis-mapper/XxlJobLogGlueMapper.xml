@@ -24,7 +24,7 @@
 
   <insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobLogGlue"
     useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO xxl_job_logglue (
+    INSERT INTO xxl_job.xxl_job_logglue (
     `job_id`,
     `glue_type`,
     `glue_source`,
@@ -47,13 +47,13 @@
   <select id="findByJobId" parameterType="java.lang.Integer" resultMap="XxlJobLogGlue">
     SELECT
     <include refid="Base_Column_List"/>
-    FROM xxl_job_logglue AS t
+    FROM xxl_job.xxl_job_logglue AS t
     WHERE t.job_id = #{jobId}
     ORDER BY id DESC
   </select>
 
   <delete id="removeOld">
-    DELETE FROM xxl_job_logglue
+    DELETE FROM xxl_job.xxl_job_logglue
     WHERE id NOT in(
     SELECT id FROM(
     SELECT id FROM xxl_job_logglue
@@ -65,7 +65,7 @@
   </delete>
 
   <delete id="deleteByJobId" parameterType="java.lang.Integer">
-    DELETE FROM xxl_job_logglue
+    DELETE FROM xxl_job.xxl_job_logglue
     WHERE `job_id` = #{jobId}
   </delete>
 </mapper>

@@ -67,7 +67,7 @@
   <select id="pageList" parameterType="java.util.HashMap" resultMap="XxlJobInfo">
     SELECT
     <include refid="Base_Column_List"/>
-    FROM xxl_job_info AS t
+    FROM xxl_job.xxl_job_info AS t
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="jobGroup gt 0">
         AND t.job_group = #{jobGroup}
@@ -91,7 +91,7 @@
 
   <select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
     SELECT count(1)
-    FROM xxl_job_info AS t
+    FROM xxl_job.xxl_job_info AS t
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="jobGroup gt 0">
         AND t.job_group = #{jobGroup}
@@ -113,7 +113,7 @@
 
   <insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobInfo" useGeneratedKeys="true"
     keyProperty="id">
-    INSERT INTO xxl_job_info (job_group,
+    INSERT INTO xxl_job.xxl_job_info (job_group,
                               job_desc,
                               add_time,
                               update_time,
@@ -168,7 +168,7 @@
   <select id="loadById" parameterType="java.util.HashMap" resultMap="XxlJobInfo">
     SELECT
     <include refid="Base_Column_List"/>
-    FROM xxl_job_info AS t
+    FROM xxl_job.xxl_job_info AS t
     WHERE t.id = #{id}
   </select>
 
@@ -201,20 +201,20 @@
 
   <delete id="delete" parameterType="java.util.HashMap">
     DELETE
-    FROM xxl_job_info
+    FROM xxl_job.xxl_job_info
     WHERE id = #{id}
   </delete>
 
   <select id="getJobsByGroup" parameterType="java.util.HashMap" resultMap="XxlJobInfo">
     SELECT
     <include refid="Base_Column_List"/>
-    FROM xxl_job_info AS t
+    FROM xxl_job.xxl_job_info AS t
     WHERE t.job_group = #{jobGroup}
   </select>
 
   <select id="findAllCount" resultType="int">
     SELECT count(1)
-    FROM xxl_job_info
+    FROM xxl_job.xxl_job_info
   </select>
 
 
@@ -229,7 +229,7 @@
   </select>
 
   <update id="scheduleUpdate" parameterType="com.xxl.job.admin.core.model.XxlJobInfo">
-    UPDATE xxl_job_info
+    UPDATE xxl_job.xxl_job_info
     SET trigger_last_time = #{triggerLastTime},
         trigger_next_time = #{triggerNextTime},
         trigger_status    = #{triggerStatus}
