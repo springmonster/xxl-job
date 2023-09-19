@@ -543,8 +543,8 @@ The concret content of configuration file as follows:
     ### xxl-job admin address list：xxl-job-admin address list: Multiple addresses are separated by commas,this address is used for "heart beat and register" and "task execution result callback" between the executor and xxl-job-admin.
     xxl.job.admin.addresses=http://127.0.0.1:8080/xxl-job-admin
     
-    ### xxl.job.executor.appname is used to group by executors
-    xxl.job.executor.appname=xxl-job-executor-sample
+    ### xxl.job.executor.appName is used to group by executors
+    xxl.job.executor.appName=xxl-job-executor-sample
     ### xxl.job.executor.ip :1,used to register with xxl-job-admin;2,xxl-job-admin dispatch task to executor through it;3,if it is blank executor will get ip automatically, multi network card need to be configured.
     xxl.job.executor.ip=
     ### xxl.job.executor.port :the port of the executor runned by,if multiple executor instance run on the same computer the port must different with each other
@@ -574,8 +574,8 @@ Concrete contet describe as follows：
     <property name="ip" value="${xxl.job.executor.ip}" />
     <!-- executor port[required] -->
     <property name="port" value="${xxl.job.executor.port}" />
-    <!-- executor AppName[required]，auto register will be closed if it blank -->
-    <property name="appname" value="${xxl.job.executor.appname}" />
+    <!-- executor appName[required]，auto register will be closed if it blank -->
+    <property name="appName" value="${xxl.job.executor.appName}" />
     <!-- register center address of executor [required]，auto register will be closed if it blank -->
     <property name="adminAddresses" value="${xxl.job.admin.addresses}" />
     <!-- log path of executor[required] -->
@@ -782,7 +782,7 @@ If you want to create a new executor,please click "+新增执行器" button:
 
 ### Description of executor attributes
 
-    Appname: the unique identity of the executor cluster,executor will registe automatically and periodically by appname so that it can be scheduled.
+    appName: the unique identity of the executor cluster,executor will registe automatically and periodically by appName so that it can be scheduled.
     名称: the name of ther executor,it is used to describe the executor.
     排序: the order of executor,it will be used in the place where need to select executor.
     注册方式:which way the schedule center used to acquire executor address through;
@@ -1225,9 +1225,9 @@ target.
 Task executor machine property has been canceled from v1.5, instead of task register and auto
 discovery, get remote machine address dynamic.
 
-    AppName: unique identify of executor cluster,  executor is minimal unite of task register, every task recognize machine addresses under the executor on which it was binded.
+    appName: unique identify of executor cluster,  executor is minimal unite of task register, every task recognize machine addresses under the executor on which it was binded.
     Beat: heartbeat cycle of task register, default is 15s, and the time executor usedto register is twice the time, the time used to auto task discover is twice the beat time, the invalid time of register is twice the Beat time.
-    registry table: see XXL_JOB_QRTZ_TRIGGER_REGISTRY table, it will maintain a register record periodically while task register, such as the bind relationship between machine address and AppName, so that schedule center can recognize machine list by AppName dynamicly.
+    registry table: see XXL_JOB_QRTZ_TRIGGER_REGISTRY table, it will maintain a register record periodically while task register, such as the bind relationship between machine address and appName, so that schedule center can recognize machine list by appName dynamicly.
 
 To ensure system lightweight and reduce learning costs, it did not use Zookeeper as register center,
 Use DB as register center to do task registration.
@@ -1440,10 +1440,10 @@ in the master branch.
 
 - 1、task register: executor registers the task automatically, schedule center will automatically
   discover the registered task and trigger execution.
-- 2、add parameter AppName for executor: AppName is the unique identifier of each executor cluster,
-  register periodically and automatically with AppName.
+- 2、add parameter appName for executor: appName is the unique identifier of each executor cluster,
+  register periodically and automatically with appName.
 - 3、add column executor management in schedule center : manage online executors, automatically
-  discover registered executors via the property AppName。Only managed executors are allowed to be
+  discover registered executors via the property appName。Only managed executors are allowed to be
   used;
 - 4、change Task group attribute to executor : each task needs to be bound to the specified exector,
   schedule address is obtained by binded executor;

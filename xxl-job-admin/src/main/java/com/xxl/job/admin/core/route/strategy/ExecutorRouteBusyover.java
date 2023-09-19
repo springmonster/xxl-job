@@ -4,9 +4,9 @@ import com.xxl.job.admin.core.route.ExecutorRouter;
 import com.xxl.job.admin.core.scheduler.XxlJobScheduler;
 import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.common.model.Response;
-import com.xxl.job.core.biz.ExecutorBiz;
-import com.xxl.job.core.biz.model.IdleBeatParam;
-import com.xxl.job.core.biz.model.TriggerParam;
+import com.xxl.job.common.biz.ExecutorBiz;
+import com.xxl.job.common.biz.model.IdleBeatParam;
+import com.xxl.job.common.biz.model.TriggerParam;
 import java.util.List;
 
 /**

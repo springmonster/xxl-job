@@ -69,8 +69,8 @@
     <include refid="Base_Column_List"/>
     FROM xxl_job.xxl_job_group AS t
     <trim prefix="WHERE" prefixOverrides="AND | OR">
-      <if test="appname != null and appname != ''">
-        AND t.app_name like CONCAT(CONCAT('%', #{appname}), '%')
+      <if test="appName != null and appName != ''">
+        AND t.app_name like CONCAT(CONCAT('%', #{appName}), '%')
       </if>
       <if test="title != null and title != ''">
         AND t.title like CONCAT(CONCAT('%', #{title}), '%')
@@ -84,8 +84,8 @@
     SELECT count(1)
     FROM xxl_job.xxl_job_group AS t
     <trim prefix="WHERE" prefixOverrides="AND | OR">
-      <if test="appname != null and appname != ''">
-        AND t.app_name like CONCAT(CONCAT('%', #{appname}), '%')
+      <if test="appName != null and appName != ''">
+        AND t.app_name like CONCAT(CONCAT('%', #{appName}), '%')
       </if>
       <if test="title != null and title != ''">
         AND t.title like CONCAT(CONCAT('%', #{title}), '%')

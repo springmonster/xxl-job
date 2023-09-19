@@ -35,11 +35,11 @@ public class XxlJobGroup {
     this.id = id;
   }
 
-  public String getAppName() {
+  public String getappName() {
     return appName;
   }
 
-  public void setAppName(String appName) {
+  public void setappName(String appName) {
     this.appName = appName;
   }
 

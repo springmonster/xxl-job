@@ -1,12 +1,12 @@
 package com.xxl.job.core.server;
 
 import com.xxl.job.common.model.Response;
-import com.xxl.job.core.biz.ExecutorBiz;
+import com.xxl.job.common.biz.ExecutorBiz;
 import com.xxl.job.core.biz.impl.ExecutorBizClientImpl;
-import com.xxl.job.core.biz.model.IdleBeatParam;
-import com.xxl.job.core.biz.model.KillParam;
-import com.xxl.job.core.biz.model.LogParam;
-import com.xxl.job.core.biz.model.TriggerParam;
+import com.xxl.job.common.biz.model.IdleBeatParam;
+import com.xxl.job.common.biz.model.KillParam;
+import com.xxl.job.common.biz.model.LogParam;
+import com.xxl.job.common.biz.model.TriggerParam;
 import com.xxl.job.core.thread.ExecutorRegistryThread;
 import com.xxl.job.core.util.GsonTool;
 import com.xxl.job.core.util.ThrowableUtil;
@@ -56,7 +56,7 @@ public class EmbedServer {
   private ExecutorBiz executorBiz;
   private Thread thread;
 
-  public void start(final String address, final int port, final String appname,
+  public void start(final String address, final int port, final String appName,
       final String accessToken) {
     executorBiz = new ExecutorBizClientImpl();
     thread = new Thread(() -> {
@@ -107,7 +107,7 @@ public class EmbedServer {
             EmbedServer.class, port);
 
         // start registry
-        startRegistry(appname, address);
+        startRegistry(appName, address);
 
         // wait util stop
         future.channel().closeFuture().sync();

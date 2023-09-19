@@ -891,8 +891,8 @@ docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://127.0.0.1:3306/xxl_jo
     ### 执行器通讯TOKEN [选填]：非空时启用；
     xxl.job.accessToken=
     
-    ### 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
-    xxl.job.executor.appname=xxl-job-executor-sample
+    ### 执行器appName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
+    xxl.job.executor.appName=xxl-job-executor-sample
     ### 执行器注册 [选填]：优先使用该配置作为注册地址，为空时使用内嵌服务 ”IP:PORT“ 作为注册地址。从而更灵活的支持容器类型执行器动态IP和动态映射端口问题。
     xxl.job.executor.address=
     ### 执行器IP [选填]：默认为空表示自动获取IP，多网卡时可手动设置指定IP，该IP不会绑定Host仅作为通讯实用；地址信息用于 "执行器注册" 和 "调度中心请求并触发任务"；
@@ -918,7 +918,7 @@ public XxlJobSpringExecutor xxlJobExecutor() {
     logger.info(">>>>>>>>>>> xxl-job config init.");
     XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
     xxlJobSpringExecutor.setAdminAddresses(adminAddresses);
-    xxlJobSpringExecutor.setAppname(appname);
+    xxlJobSpringExecutor.setappName(appName);
     xxlJobSpringExecutor.setIp(ip);
     xxlJobSpringExecutor.setPort(port);
     xxlJobSpringExecutor.setAccessToken(accessToken);
@@ -945,7 +945,7 @@ public XxlJobSpringExecutor xxlJobExecutor() {
 执行器集群部署时，几点要求和建议：
 
 - 执行器回调地址（xxl.job.admin.addresses）需要保持一致；执行器根据该配置进行执行器自动注册等操作。
-- 同一个执行器集群内AppName（xxl.job.executor.appname）需要保持一致；调度中心根据该配置动态发现不同集群的在线执行器列表。
+- 同一个执行器集群内appName（xxl.job.executor.appName）需要保持一致；调度中心根据该配置动态发现不同集群的在线执行器列表。
 
 ### 2.5 开发第一个任务“Hello World”
 
@@ -1200,8 +1200,8 @@ IDE界面，在该界面支持对任务代码进行开发（也可以在IDE中�
 
 执行器属性说明
 
-    AppName: 是每个执行器集群的唯一标示AppName, 执行器会周期性以AppName为对象进行自动注册。可通过该配置自动发现注册成功的执行器, 供任务调度时使用;
-    名称: 执行器的名称, 因为AppName限制字母数字等组成,可读性不强, 名称为了提高执行器的可读性;
+    appName: 是每个执行器集群的唯一标示appName, 执行器会周期性以appName为对象进行自动注册。可通过该配置自动发现注册成功的执行器, 供任务调度时使用;
+    名称: 执行器的名称, 因为appName限制字母数字等组成,可读性不强, 名称为了提高执行器的可读性;
     排序: 执行器的排序, 系统中需要执行器的地方,如任务新增, 将会按照该排序读取可用的执行器列表;
     注册方式：调度中心获取执行器地址的方式；
         自动注册：执行器自动进行执行器注册，调度中心通过底层注册表可以动态发现执行器机器地址；
@@ -1555,8 +1555,8 @@ XXL-JOB会为每次调度请求生成一个单独的日志文件，需要通过 
 
 自v1.5版本之后, 任务取消了"任务执行机器"属性, 改为通过任务注册和自动发现的方式, 动态获取远程执行器地址并执行。
 
-    AppName: 每个执行器机器集群的唯一标示, 任务注册以 "执行器" 为最小粒度进行注册; 每个任务通过其绑定的执行器可感知对应的执行器机器列表;
-    注册表: 见"xxl_job_registry"表, "执行器" 在进行任务注册时将会周期性维护一条注册记录，即机器地址和AppName的绑定关系; "调度中心" 从而可以动态感知每个AppName在线的机器列表;
+    appName: 每个执行器机器集群的唯一标示, 任务注册以 "执行器" 为最小粒度进行注册; 每个任务通过其绑定的执行器可感知对应的执行器机器列表;
+    注册表: 见"xxl_job_registry"表, "执行器" 在进行任务注册时将会周期性维护一条注册记录，即机器地址和appName的绑定关系; "调度中心" 从而可以动态感知每个appName在线的机器列表;
     执行器注册: 任务注册Beat周期默认30s; 执行器以一倍Beat进行执行器注册, 调度中心以一倍Beat进行动态任务发现; 注册信息的失效时间为三倍Beat; 
     执行器注册摘除：执行器销毁时，将会主动上报调度中心并摘除对应的执行器机器信息，提高心跳注册的实时性；
 
@@ -1771,7 +1771,7 @@ Header：
 请求数据格式如下，放置在 RequestBody 中，JSON格式：
     {
         "registryGroup":"EXECUTOR",                     // 固定值
-        "registryKey":"xxl-job-executor-example",       // 执行器AppName
+        "registryKey":"xxl-job-executor-example",       // 执行器appName
         "registryValue":"http://127.0.0.1:9999/"        // 执行器地址，内置服务跟地址
     }
 
@@ -1797,7 +1797,7 @@ Header：
 请求数据格式如下，放置在 RequestBody 中，JSON格式：
     {
         "registryGroup":"EXECUTOR",                     // 固定值
-        "registryKey":"xxl-job-executor-example",       // 执行器AppName
+        "registryKey":"xxl-job-executor-example",       // 执行器appName
         "registryValue":"http://127.0.0.1:9999/"        // 执行器地址，内置服务跟地址
     }
 
@@ -1810,7 +1810,7 @@ Header：
 
 ### 6.2 执行器 RESTful API
 
-API服务位置：com.xxl.job.core.biz.ExecutorBiz
+API服务位置：com.xxl.job.common.biz.ExecutorBiz
 API服务请求参考代码：com.xxl.job.executorbiz.ExecutorBizTest
 
 #### a、心跳检测
@@ -2067,8 +2067,8 @@ Tips: 历史版本(V1.3.x)目前已经Release至稳定版本, 进入维护阶段
 ### 7.9 版本 V1.5.0 特性[2016-11-13]
 
 - 1、任务注册: 执行器会周期性自动注册任务, 调度中心将会自动发现注册的任务并触发执行。
-- 2、"执行器" 新增参数 "AppName" : 是每个执行器集群的唯一标示AppName, 并周期性以AppName为对象进行自动注册。
-- 3、调度中心新增栏目 "执行器管理" : 管理在线的执行器, 通过属性AppName自动发现注册的执行器。只有被管理的执行器才允许被使用;
+- 2、"执行器" 新增参数 "appName" : 是每个执行器集群的唯一标示appName, 并周期性以appName为对象进行自动注册。
+- 3、调度中心新增栏目 "执行器管理" : 管理在线的执行器, 通过属性appName自动发现注册的执行器。只有被管理的执行器才允许被使用;
 - 4、"任务组"属性改为"执行器": 每个任务需要绑定指定的执行器, 调度地址通过绑定的执行器获取;
 - 5、抛弃"任务机器"属性: 通过任务绑定的执行器, 自动发现注册的远程执行器地址并触发调度请求。
 - 6、"公共依赖"中新增DBGlueLoader,基于原生jdbc实现GLUE源码的加载器,减少第三方依赖(
@@ -2455,7 +2455,7 @@ data: post-data
 - 20、修复bootstrap.min.css.map 404问题；
 - 21、执行器UI交互优化,移除冗余order属性；
 - 22、执行备注消息长度限制，修复数据超长无法存储导致导致回调失败的问题；
-  注意：XxlJobSpringExecutor组件个别字段调整：“appName” 调整为 “appname” ，升级时该组件时需要注意；
+  注意：XxlJobSpringExecutor组件个别字段调整：“appName” 调整为 “appName” ，升级时该组件时需要注意；
 
 ### 7.31 版本 v2.3.0 Release Notes[2021-02-09]
 

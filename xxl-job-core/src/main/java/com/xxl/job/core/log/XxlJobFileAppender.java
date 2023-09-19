@@ -1,6 +1,6 @@
 package com.xxl.job.core.log;
 
-import com.xxl.job.core.biz.model.LogResult;
+import com.xxl.job.common.biz.model.LogResult;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
