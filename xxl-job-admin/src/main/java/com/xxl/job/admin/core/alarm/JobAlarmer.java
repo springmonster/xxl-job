@@ -27,10 +27,10 @@ public class JobAlarmer implements ApplicationContextAware, InitializingBean {
   }
 
   @Override
-  public void afterPropertiesSet() throws Exception {
+  public void afterPropertiesSet() {
     Map<String, JobAlarm> serviceBeanMap = applicationContext.getBeansOfType(JobAlarm.class);
-    if (serviceBeanMap != null && serviceBeanMap.size() > 0) {
-      jobAlarmList = new ArrayList<JobAlarm>(serviceBeanMap.values());
+    if (!serviceBeanMap.isEmpty()) {
+      jobAlarmList = new ArrayList<>(serviceBeanMap.values());
     }
   }
 

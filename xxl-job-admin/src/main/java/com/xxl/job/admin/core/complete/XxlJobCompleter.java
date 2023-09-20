@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  */
 public class XxlJobCompleter {
 
-  private static Logger logger = LoggerFactory.getLogger(XxlJobCompleter.class);
+  private static final Logger logger = LoggerFactory.getLogger(XxlJobCompleter.class);
 
   /**
    * common fresh handle entrance (limit only once)
